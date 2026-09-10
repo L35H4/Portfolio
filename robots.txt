@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
-Sitemap: https://l35h4.github.io/Portfolio/sitemap.xml
+Sitemap: https://www.korepanov.art/sitemap.xml
+
 
