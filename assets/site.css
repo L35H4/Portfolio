@@ -11,7 +11,9 @@ html,body{margin:0}body{overflow-x:hidden}
 #ak-portfolio-v2 .ak-header,#ak-portfolio-v2 .ak-footer{background:#2b2d31;box-shadow:0 0 0 100vmax #2b2d31;clip-path:inset(0 -100vmax)}#ak-portfolio-v2 .ak-experience h3{font-size:21px;line-height:1.4;letter-spacing:-.02em;margin-bottom:8px;color:var(--ak-ink)}#ak-portfolio-v2 .ak-job-meta{font-size:15px;margin-bottom:10px}#ak-portfolio-v2 .ak-experience summary{cursor:pointer;color:var(--ak-ink);padding:16px 0;text-underline-offset:5px}#ak-portfolio-v2 .ak-experience summary:hover{text-decoration:underline}#ak-portfolio-v2 .ak-hide-history{display:none}#ak-portfolio-v2 details[open] .ak-hide-history{display:inline}#ak-portfolio-v2 details[open] .ak-show-history{display:none}#ak-portfolio-v2 .ak-history article{border-top:1px solid var(--ak-border);padding:26px 0 8px}#ak-portfolio-v2 .ak-experience details{margin-top:12px}
 
 
-:root,html,body{--background:#131313;--color-background-primary:#131313;background:#131313!important}
+:root{--background:#131313;--color-background-primary:#131313;background:#131313}
+html{min-height:100%;background:#131313}
+body{min-height:100vh;background:linear-gradient(90deg,#131313 0%,#171b1e 55%,#202a30 100%);background-attachment:fixed}
 #ak-portfolio-v2{--ak-paper:#131313;--ak-ink:#faf8f1;--ak-secondary:#bcbab5;--ak-border:#333331;--ak-soft:#1d1d1c;--ak-green:#faf8f1;font-family:'Onest',sans-serif;font-size:18px;line-height:1.7;padding-inline:clamp(24px,8vw,154px)}
 #ak-portfolio-v2 h1,#ak-portfolio-v2 h2,#ak-portfolio-v2 h3,#ak-portfolio-v2 .ak-role,#ak-portfolio-v2 .ak-brand,#ak-portfolio-v2 .ak-monogram,#ak-portfolio-v2 .ak-footer-title{font-family:'Onest',sans-serif;letter-spacing:-.035em}
 #ak-portfolio-v2 .ak-header,#ak-portfolio-v2 .ak-footer{background:#1a1a19;box-shadow:0 0 0 100vmax #1a1a19;border-color:transparent}
@@ -64,8 +66,7 @@ html,body{margin:0}body{overflow-x:hidden}
 @media(max-width:760px){#ak-portfolio-v2 .ak-intro{grid-template-columns:1fr;align-items:center}#ak-portfolio-v2 .ak-photo{width:100%;max-width:340px;justify-self:center}}
 
 
-#ak-portfolio-v2{position:relative;isolation:isolate;--ak-green:#70d6ed;--ak-accent:#70d6ed;background-image:radial-gradient(ellipse at 94% 14%,#35526324 0%,#2738400c 32%,transparent 65%)}
-#ak-portfolio-v2::before{content:"";position:absolute;inset:0 0 0 auto;width:68%;z-index:-1;pointer-events:none;background-image:url("topographic-lines.svg");background-size:900px 1500px;background-position:right top;background-repeat:repeat-y;opacity:.30;mask-image:linear-gradient(90deg,transparent 0%,#0005 32%,#000 80%);-webkit-mask-image:linear-gradient(90deg,transparent 0%,#0005 32%,#000 80%)}
+#ak-portfolio-v2{position:relative;isolation:isolate;--ak-green:#70d6ed;--ak-accent:#70d6ed;background:transparent;max-width:1920px;width:100%;margin-inline:auto}
 #ak-portfolio-v2>.ak-header,#ak-portfolio-v2>main,#ak-portfolio-v2>.ak-footer{position:relative;z-index:1}
 #ak-portfolio-v2 .ak-nav button[aria-current=page]{border-bottom:2px solid var(--ak-accent);padding-bottom:6px}
 #ak-portfolio-v2 .ak-monogram span{color:var(--ak-accent)}
@@ -75,4 +76,65 @@ html,body{margin:0}body{overflow-x:hidden}
 #ak-portfolio-v2 .ak-arrow:hover{color:var(--ak-accent);border-color:var(--ak-accent);background:#70d6ed0b}
 #ak-portfolio-v2 .ak-thumb[aria-pressed=true]{border-color:var(--ak-accent);outline-color:var(--ak-accent)}
 #ak-portfolio-v2 .ak-experience summary::marker{color:var(--ak-accent)}
-@media(max-width:760px){#ak-portfolio-v2::before{width:100%;background-size:680px 1133px;opacity:.16;mask-image:linear-gradient(90deg,transparent,#000 100%);-webkit-mask-image:linear-gradient(90deg,transparent,#000 100%)}}
+
+/* Resume: one disclosure, with the original document's text and hierarchy. */
+#ak-portfolio-v2 .ak-experience-section{display:block;padding:0}
+#ak-portfolio-v2 .ak-experience-panel summary{display:flex;align-items:center;gap:24px;list-style:none;cursor:pointer;padding:36px 0;min-height:88px}
+#ak-portfolio-v2 .ak-experience-panel summary::-webkit-details-marker{display:none}
+#ak-portfolio-v2 .ak-experience-panel summary h2{flex:1}
+#ak-portfolio-v2 .ak-experience-total{color:var(--ak-secondary);font-size:22px;font-variant-numeric:tabular-nums}
+#ak-portfolio-v2 .ak-experience-arrow{color:var(--ak-accent);flex-shrink:0;transition:transform .18s ease}
+#ak-portfolio-v2 .ak-experience-panel[open] .ak-experience-arrow{transform:rotate(180deg)}
+#ak-portfolio-v2 .ak-experience-panel summary:hover .ak-experience-total{color:var(--ak-accent)}
+#ak-portfolio-v2 .ak-experience-panel summary:focus-visible{outline:2px solid var(--ak-accent);outline-offset:4px}
+#ak-portfolio-v2 .ak-resume-history{padding:0 0 44px;margin-left:calc((100% - 56px)*.62/2.12 + 56px)}
+#ak-portfolio-v2 .ak-resume-job{padding:36px 0;border-top:1px solid var(--ak-border)}
+#ak-portfolio-v2 .ak-resume-job:first-child{padding-top:0;border-top:0}
+#ak-portfolio-v2 .ak-resume-job:last-child{padding-bottom:0}
+#ak-portfolio-v2 .ak-resume-job h3{font-size:23px;font-weight:600;line-height:1.4;letter-spacing:-.02em;margin:0 0 8px;color:#f3f5f6}
+#ak-portfolio-v2 .ak-resume-job .ak-employer-description{font-size:16px;line-height:1.6;color:#aeb8be;margin:0 0 20px}
+#ak-portfolio-v2 .ak-resume-job .ak-job-role{font-size:20px;font-weight:500;line-height:1.5;color:#e2e8eb;margin:0 0 8px}
+#ak-portfolio-v2 .ak-resume-job .ak-job-dates{font-size:16px;color:#b8c1c7;margin:0 0 4px}
+#ak-portfolio-v2 .ak-resume-job .ak-job-city{font-size:16px;color:var(--ak-accent);margin:0 0 22px}
+#ak-portfolio-v2 .ak-resume-job ul{padding-left:22px;margin:0;color:#d0d5d8;line-height:1.75}
+#ak-portfolio-v2 .ak-resume-job li{padding-left:4px;margin-bottom:16px}
+#ak-portfolio-v2 .ak-resume-job li:last-child{margin-bottom:0}
+#ak-portfolio-v2 .ak-resume-job li::marker{color:#869ba7}
+
+/* Full-width bars follow the same left-to-right light direction as the page. */
+#ak-portfolio-v2 .ak-header,#ak-portfolio-v2 .ak-footer{background:transparent;box-shadow:none;clip-path:none;isolation:isolate;border-color:#71889530}
+#ak-portfolio-v2 .ak-header::before,#ak-portfolio-v2 .ak-footer::before{content:"";position:absolute;top:0;bottom:0;left:50%;width:100vw;transform:translateX(-50%);z-index:-1;pointer-events:none;background:linear-gradient(90deg,#1c2023 0%,#222b31 55%,#2c3a43 100%)}
+#ak-portfolio-v2 .ak-header,#ak-portfolio-v2 .ak-footer{border-color:transparent}
+#ak-portfolio-v2 .ak-header::after,#ak-portfolio-v2 .ak-footer::after{content:"";position:absolute;left:50%;width:100vw;height:1px;transform:translateX(-50%);background:#71889530;pointer-events:none}
+#ak-portfolio-v2 .ak-header::after{bottom:-1px}
+#ak-portfolio-v2 .ak-footer::after{top:-1px}
+@media(max-width:760px){
+  #ak-portfolio-v2 .ak-experience-panel summary{padding:28px 0;gap:18px}
+  #ak-portfolio-v2 .ak-experience-total{font-size:20px}
+  #ak-portfolio-v2 .ak-resume-history{margin-left:0;padding-bottom:32px}
+  #ak-portfolio-v2 .ak-resume-job{padding-block:28px}
+  #ak-portfolio-v2 .ak-resume-job h3{font-size:21px}
+  #ak-portfolio-v2 .ak-resume-job .ak-job-role{font-size:18px}
+}
+@media(prefers-reduced-motion:reduce){#ak-portfolio-v2 .ak-experience-arrow{transition:none}}
+
+#ak-portfolio-v2 #ak-experience .ak-resume-history{margin-left:0;padding-bottom:48px}
+#ak-portfolio-v2 #ak-experience .ak-resume-job{display:grid;grid-template-columns:.62fr 1.5fr;column-gap:56px;padding:36px 0;border-top:1px solid var(--ak-border)}
+#ak-portfolio-v2 #ak-experience .ak-resume-job h3,#ak-portfolio-v2 #ak-experience .ak-employer-description{grid-column:1}
+#ak-portfolio-v2 #ak-experience .ak-resume-job h3{grid-row:1}
+#ak-portfolio-v2 #ak-experience .ak-employer-description{grid-row:2 / span 4;align-self:start}
+#ak-portfolio-v2 #ak-experience .ak-job-role{grid-column:2;grid-row:1}
+#ak-portfolio-v2 #ak-experience .ak-job-dates{grid-column:2;grid-row:2}
+#ak-portfolio-v2 #ak-experience .ak-job-city{grid-column:2;grid-row:3}
+#ak-portfolio-v2 #ak-experience .ak-resume-job ul{grid-column:2;grid-row:4}
+@media(max-width:760px){#ak-portfolio-v2 #ak-experience .ak-resume-job{display:block;padding:28px 0}#ak-portfolio-v2 .ak-nav{gap:16px}}
+@media(max-width:480px){#ak-portfolio-v2 .ak-header{align-items:flex-start}#ak-portfolio-v2 .ak-nav{justify-content:flex-end;gap:10px 16px;flex:1}#ak-portfolio-v2 .ak-nav a{padding:5px 10px}}
+
+#ak-portfolio-v2 .ak-footer{display:flex;align-items:center;justify-content:space-between;gap:24px;min-height:80px;padding-block:14px}
+#ak-portfolio-v2 .ak-footer-title{font-size:20px;line-height:1.4;margin:0;flex-shrink:0}
+#ak-portfolio-v2 .ak-contacts{display:flex;align-items:center;gap:clamp(24px,4vw,64px);flex-wrap:wrap}
+#ak-portfolio-v2 .ak-contacts a{display:inline-flex;align-items:center;gap:10px;min-height:44px;font-size:16px;white-space:nowrap;text-decoration:none}
+#ak-portfolio-v2 .ak-contacts a:hover{text-decoration:underline}
+#ak-portfolio-v2 .ak-contacts svg{width:20px;height:20px;flex-shrink:0;color:var(--ak-accent)}
+@media(max-width:900px){#ak-portfolio-v2 .ak-footer{flex-wrap:wrap;gap:8px 24px}#ak-portfolio-v2 .ak-contacts{gap:4px 24px}}
+@media(max-width:480px){#ak-portfolio-v2 .ak-footer{padding-block:16px}#ak-portfolio-v2 .ak-contacts{flex-direction:column;align-items:flex-start;gap:0}}
