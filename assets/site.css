@@ -61,8 +61,8 @@ body{min-height:100vh;background:linear-gradient(90deg,#131313 0%,#171b1e 55%,#2
 
 
 #ak-portfolio-v2 .ak-intro{grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);align-items:end}
-#ak-portfolio-v2 .ak-photo{align-self:end;justify-self:end;width:min(100%,var(--ak-portrait-size,430px));max-width:none}
-#ak-portfolio-v2 .ak-photo img{position:static;width:100%;height:auto;aspect-ratio:1;object-fit:contain;max-width:none}
+#ak-portfolio-v2 .ak-photo{align-self:end;justify-self:end;width:100%;max-width:none}
+#ak-portfolio-v2 .ak-photo img{position:static;width:100%;height:auto;aspect-ratio:1;object-fit:cover;object-position:center 36%;max-width:none}
 @media(max-width:760px){#ak-portfolio-v2 .ak-intro{grid-template-columns:1fr;align-items:center}#ak-portfolio-v2 .ak-photo{width:100%;max-width:340px;justify-self:center}}
 
 
@@ -138,3 +138,70 @@ body{min-height:100vh;background:linear-gradient(90deg,#131313 0%,#171b1e 55%,#2
 #ak-portfolio-v2 .ak-contacts svg{width:20px;height:20px;flex-shrink:0;color:var(--ak-accent)}
 @media(max-width:900px){#ak-portfolio-v2 .ak-footer{flex-wrap:wrap;gap:8px 24px}#ak-portfolio-v2 .ak-contacts{gap:4px 24px}}
 @media(max-width:480px){#ak-portfolio-v2 .ak-footer{padding-block:16px}#ak-portfolio-v2 .ak-contacts{flex-direction:column;align-items:flex-start;gap:0}}
+
+/* Main portrait and introduction */
+#ak-portfolio-v2 .ak-intro{grid-template-columns:minmax(0,.62fr) minmax(0,1.5fr);gap:56px;align-items:center;padding:48px 0;text-align:left}
+#ak-portfolio-v2 .ak-intro>div{align-self:center;display:block;min-width:0;max-width:100%;text-align:left;overflow-wrap:anywhere}
+#ak-portfolio-v2 .ak-intro h1{max-width:100%;margin-bottom:8px;font-size:clamp(36px,4.5vw,58px)}
+#ak-portfolio-v2 .ak-intro .ak-label{margin-bottom:12px;color:var(--ak-accent);font-size:clamp(16px,1.6vw,18px);font-weight:600;line-height:1.4;letter-spacing:.035em;text-transform:uppercase}
+#ak-portfolio-v2 .ak-intro .ak-label span{color:var(--ak-ink)}
+#ak-portfolio-v2 .ak-intro .ak-lead{max-width:min(100%,680px);margin-bottom:0;font-size:clamp(16px,1.7vw,18px);line-height:1.5}
+#ak-portfolio-v2 .ak-intro .ak-actions{margin-top:12px;padding-top:0}
+#ak-portfolio-v2 .ak-intro .ak-button{min-height:44px;padding:8px 18px}
+#ak-portfolio-v2 .ak-intro .ak-button{max-width:100%;white-space:normal}
+#ak-portfolio-v2 .ak-photo{grid-row:auto;align-self:center;justify-self:start;width:100%;max-width:none;margin:0;text-align:left}
+#ak-portfolio-v2 .ak-photo img{display:block;width:100%;height:auto;aspect-ratio:1 / 1;object-fit:cover;object-position:center 36%;margin:0;border-radius:8px}
+@media(max-width:1023px){#ak-portfolio-v2 .ak-intro,#ak-portfolio-v2 .ak-section{grid-template-columns:minmax(0,1fr);gap:32px}#ak-portfolio-v2 .ak-photo{width:min(100%,clamp(260px,35vw,360px));justify-self:start}}
+@media(max-width:760px){#ak-portfolio-v2 .ak-intro{grid-template-columns:minmax(0,1fr);gap:28px;padding:32px 0}#ak-portfolio-v2 .ak-photo{width:min(100%,clamp(240px,40vw,340px))}}
+@media(max-width:420px){#ak-portfolio-v2 .ak-intro{gap:24px}#ak-portfolio-v2 .ak-photo{width:min(100%,260px)}#ak-portfolio-v2 .ak-intro .ak-actions{align-items:stretch;flex-direction:column}#ak-portfolio-v2 .ak-intro .ak-button{width:100%}}
+
+/* Project list: each section is one accessible link. */
+#ak-portfolio-v2 .ak-project-row{cursor:pointer;position:relative}
+#ak-portfolio-v2 .ak-project-row:focus-visible{outline:2px solid var(--ak-accent);outline-offset:-2px}
+#ak-portfolio-v2 .ak-project-row:hover h2,#ak-portfolio-v2 .ak-project-row:focus-visible h2{color:var(--ak-accent)}
+#ak-portfolio-v2 .ak-preview{padding:0;background:transparent;border:0;border-radius:0}
+#ak-portfolio-v2 .ak-preview img{border-radius:5px}
+#ak-portfolio-v2 .ak-project-row .ak-project-logo{display:flex;align-items:center;height:76px;margin-bottom:36px;line-height:0}
+#ak-portfolio-v2 .ak-project-logo img{display:block;width:auto;max-width:100%}
+#ak-portfolio-v2 .ak-project-logo-epps img{height:72px}
+#ak-portfolio-v2 .ak-project-logo-grad img{height:61px}
+#ak-portfolio-v2 .ak-project-logo-earm img{height:38px}
+
+/* Keep the short experience summary on one line when space allows. */
+#ak-portfolio-v2 #ak-experience .ak-page-title>p:last-child,#ak-portfolio-v2 #ak-projects .ak-page-title>p:last-child{max-width:none}
+@media(min-width:700px){#ak-portfolio-v2 #ak-experience .ak-page-title>p:last-child,#ak-portfolio-v2 #ak-projects .ak-page-title>p:last-child{white-space:nowrap}}
+
+#ak-portfolio-v2 .ak-case-head{padding-bottom:0}
+#ak-portfolio-v2 .ak-case-meta{gap:16px;padding-top:0;border-top:0}
+#ak-portfolio-v2 .ak-case-meta>div,#ak-portfolio-v2 .ak-case-body .ak-section{min-width:0;padding:22px 24px;border:1px solid var(--ak-border);border-radius:6px;background:rgba(255,255,255,.035)}
+#ak-portfolio-v2 .ak-case-meta>div{font-size:18px;font-weight:500;line-height:1.45}
+#ak-portfolio-v2 .ak-case-meta span{margin-bottom:8px;font-size:14px;font-weight:400;line-height:1.4}
+#ak-portfolio-v2 .ak-case-body{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin:16px 0 48px;border:0}
+#ak-portfolio-v2 .ak-case-body .ak-section{display:block}
+#ak-portfolio-v2 .ak-case-body .ak-section h2{margin-bottom:16px;font-size:18px;line-height:1.4}
+#ak-portfolio-v2 .ak-case-body .ak-copy{max-width:100%;font-size:16px;line-height:1.65}
+@media(max-width:900px){#ak-portfolio-v2 .ak-case-meta,#ak-portfolio-v2 .ak-case-body{grid-template-columns:1fr;gap:12px}#ak-portfolio-v2 .ak-case-meta>div,#ak-portfolio-v2 .ak-case-body .ak-section{padding:20px}#ak-portfolio-v2 .ak-case-body{margin-top:12px;margin-bottom:32px}}
+
+/* Full-width gallery with a click-to-expand lightbox. */
+body.ak-lightbox-open{position:fixed;right:0;left:0;width:100%;overflow:hidden}
+body.ak-lightbox-open #ak-portfolio-v2>main{z-index:100}
+#ak-portfolio-v2 .ak-stage{min-height:0;padding:0;background:transparent;border-radius:0;cursor:zoom-in}
+#ak-portfolio-v2 .ak-stage:focus-visible{outline:2px solid var(--ak-accent);outline-offset:5px}
+#ak-portfolio-v2 .ak-stage img{width:100%;height:auto;max-height:none;object-fit:contain;border-radius:5px}
+#ak-portfolio-v2 .ak-stage.ak-expanded{position:fixed;inset:0;z-index:1000;width:auto;height:auto;padding:clamp(18px,3vw,52px);background:rgba(8,10,12,.88);border:0;border-radius:0;box-shadow:none;cursor:zoom-out}
+#ak-portfolio-v2 .ak-stage.ak-expanded img{width:100%;height:100%;max-width:100%;max-height:100%;object-fit:contain;border-radius:0}
+#ak-portfolio-v2 .ak-caption{margin:24px 0 28px}
+#ak-portfolio-v2 .ak-thumbs{display:flex;gap:12px;flex-wrap:nowrap;overflow-x:auto;padding:2px 2px 10px;scrollbar-width:thin}
+#ak-portfolio-v2 .ak-thumb{flex:0 0 124px;width:124px;padding:5px;background:transparent}
+#ak-portfolio-v2 .ak-thumb img{width:100%;height:70px;object-fit:cover}
+@media(max-width:650px){#ak-portfolio-v2 .ak-caption{margin:20px 0 24px}#ak-portfolio-v2 .ak-thumb{flex-basis:104px;width:104px}#ak-portfolio-v2 .ak-thumb img{height:58px}}
+
+/* Shared content width for every page and the site chrome. */
+#ak-portfolio-v2>.ak-header,#ak-portfolio-v2>main,#ak-portfolio-v2>.ak-footer{width:100%;max-width:1200px;margin-inline:auto}
+
+/* Project navigation lives above the case title. */
+#ak-portfolio-v2 .ak-case-nav{display:flex;align-items:center;justify-content:space-between;gap:20px;border-bottom:1px solid var(--ak-border);padding:18px 0}
+#ak-portfolio-v2 .ak-case-nav button{min-height:44px;padding:0;font-size:15px;color:var(--ak-secondary)}
+#ak-portfolio-v2 .ak-case-nav button:last-child{text-align:right}
+#ak-portfolio-v2 .ak-case-head .ak-label{margin-bottom:20px}
+@media(max-width:480px){#ak-portfolio-v2 .ak-case-nav{gap:14px}#ak-portfolio-v2 .ak-case-nav button{font-size:14px}}
