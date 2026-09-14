@@ -1,0 +1,15 @@
+{
+  "name": "korepanov-portfolio",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=24.15.0 <25" },
+  "packageManager": "pnpm@11.19.0",
+  "scripts": {
+    "start": "node scripts/serve.mjs",
+    "check": "node --check assets/site.js && node scripts/check.mjs",
+    "test": "node --test",
+    "verify": "pnpm run check && pnpm test"
+  },
+  "devDependencies": { "jsdom": "30.0.1" }
+}

@@ -27,13 +27,125 @@ earm:{name:'ЕАРМ',subtitle:'Мониторинг и подготовка о�
 ['earm-prototype','Интерактивный прототип','По обязательному требованию заказчика весь дизайн поддерживался как большой кликабельный прототип. При итерациях обновлялись и экраны, и переходы между ними.']],
 body:section('Задача','<p>Спроектировать дашборды для анализа показателей скважин, фильтрации данных и выгрузки отчётов.</p>')+section('Что сделал','<p>Унифицировал интерфейс и фильтрацию, описал логику экранов вместе с аналитиком и подготовил интерактивный прототип.</p>')+section('Результат','<p>Функционал вышел в продакшн и продолжает использоваться без изменений.</p>')}
 };
-const $=s=>root.querySelector(s);let current='about',slideIndex=0,lightboxScrollY=0;const stack=[];
-$('#ak-project-list').innerHTML=Object.entries(projects).map(([id,p])=>`<article class="ak-project-row" data-route="${id}" role="link" tabindex="0" aria-label="Открыть проект ${p.name}"><div><h2 class="ak-project-logo ak-project-logo-${id}"><img src="${media['logo-'+id]}" alt="${p.name}"></h2><h3>${p.subtitle}</h3><p>${p.summary}</p><span class="ak-view" aria-hidden="true">Открыть проект ↗</span></div><div class="ak-preview"><img src="${media['preview-'+id]}" alt="Превью проекта ${p.name}"></div></article>`).join('');
-function showSlide(index){const p=projects[current];slideIndex=(index+p.slides.length)%p.slides.length;const s=p.slides[slideIndex];$('#ak-slide').src=media[s[0]];$('#ak-slide').alt=s[1];$('#ak-slide-title').textContent=s[1];$('#ak-slide-copy').textContent=s[2];root.querySelectorAll('[data-index]').forEach(b=>b.setAttribute('aria-pressed',String(Number(b.dataset.index)===slideIndex)));}
-function setExpanded(on){const stage=$('#ak-stage'),wasOpen=stage.classList.contains('ak-expanded');if(on===wasOpen)return;if(on){lightboxScrollY=window.scrollY;stage.classList.add('ak-expanded');document.body.style.top=`-${lightboxScrollY}px`;document.body.classList.add('ak-lightbox-open');}else{stage.classList.remove('ak-expanded');stage.blur();document.body.classList.remove('ak-lightbox-open');document.body.style.top='';window.scrollTo(0,lightboxScrollY);requestAnimationFrame(()=>window.scrollTo(0,lightboxScrollY));}stage.setAttribute('aria-pressed',String(on));stage.setAttribute('aria-label',on?'Закрыть увеличенное изображение':'Увеличить изображение');}
-function route(name,remember=true){if(!['about','projects','experience',...Object.keys(projects)].includes(name))return;setExpanded(false);if(remember&&name!==current)stack.push(current);current=name;if(remember&&location.hash!=='#'+name)history.pushState(null,'','#'+name);document.title=(projects[name]?projects[name].name:name==='projects'?'Проекты':name==='experience'?'Опыт':'Обо мне')+' — Алексей Корепанов';$('#ak-about').hidden=name!=='about';$('#ak-projects').hidden=name!=='projects';$('#ak-experience').hidden=name!=='experience';$('#ak-case').hidden=!projects[name];root.querySelectorAll('.ak-nav [data-route]').forEach(b=>{const active=b.dataset.route===(projects[name]?'projects':name);if(active)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current');});if(projects[name]){const p=projects[name];$('#ak-case-label').textContent='НЕФТЕГАЗОВАЯ ОТРАСЛЬ / B2B';$('#ak-case-name').textContent=p.name;$('#ak-case-subtitle').textContent=p.subtitle;$('#ak-case-meta').innerHTML=p.meta.map((v,i)=>`<div><span>${['Роль','Продолжительность','Команда'][i]}</span>${v}</div>`).join('');$('#ak-case-body').innerHTML=p.body;$('#ak-next').dataset.route=p.next;$('#ak-next').textContent=`${projects[p.next].name} →`;$('#ak-thumbs').innerHTML=p.slides.map((s,i)=>`<button class="ak-thumb" data-index="${i}" aria-label="Слайд ${i+1}: ${s[1]}" aria-pressed="false"><img src="${media[s[0]]}" alt=""></button>`).join('');showSlide(0);}requestAnimationFrame(()=>root.scrollIntoView({block:'start',behavior:'instant'}));}
-root.addEventListener('click',e=>{const target=e.target instanceof Element?e.target:null;if(!target)return;const routeTarget=target.closest('[data-route]');if(routeTarget&&root.contains(routeTarget)){route(routeTarget.dataset.route);return;}if(target.closest('#ak-stage')){setExpanded(!$('#ak-stage').classList.contains('ak-expanded'));return;}const el=target.closest('button');if(!el||!root.contains(el))return;if(el.dataset.index!==undefined){showSlide(Number(el.dataset.index));return;}});
-root.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('#ak-stage').classList.contains('ak-expanded')){e.preventDefault();setExpanded(false);return;}if(e.target===$('#ak-stage')&&(e.key==='Enter'||e.key===' ')){e.preventDefault();setExpanded(!$('#ak-stage').classList.contains('ak-expanded'));return;}const project=e.target instanceof Element?e.target.closest('.ak-project-row[data-route]'):null;if(project&&e.target===project&&(e.key==='Enter'||e.key===' ')){e.preventDefault();route(project.dataset.route);return;}if(!projects[current]||!e.target.closest('.ak-gallery'))return;if(e.key==='ArrowRight'){e.preventDefault();showSlide(slideIndex+1);}if(e.key==='ArrowLeft'){e.preventDefault();showSlide(slideIndex-1);}});
-window.addEventListener('popstate',()=>route(location.hash.slice(1)||'about',false));
-route(location.hash.slice(1)||'about',false);
+const $ = selector => root.querySelector(selector);
+let current = 'about', slideIndex = 0, lightboxScrollY = 0;
+const isolatedElements = [];
+const routes = ['about', 'projects', 'experience', ...Object.keys(projects)];
+
+$('#ak-project-list').innerHTML = Object.entries(projects).map(([id, p]) => `<article class="ak-project-row" data-route="${id}" role="link" tabindex="0" aria-label="Открыть проект ${p.name}"><div><h2 class="ak-project-logo ak-project-logo-${id}"><img src="${media['logo-'+id]}" alt="${p.name}"></h2><h3>${p.subtitle}</h3><p>${p.summary}</p><span class="ak-view" aria-hidden="true">Открыть проект ↗</span></div><div class="ak-preview"><img src="${media['preview-'+id]}" alt="Превью проекта ${p.name}"></div></article>`).join('');
+
+function showSlide(index) {
+  const project = projects[current];
+  slideIndex = (index + project.slides.length) % project.slides.length;
+  const slide = project.slides[slideIndex];
+  $('#ak-slide').src = media[slide[0]];
+  $('#ak-slide').alt = slide[1];
+  $('#ak-slide-title').textContent = slide[1];
+  $('#ak-slide-copy').textContent = slide[2];
+  root.querySelectorAll('[data-index]').forEach(button => button.setAttribute('aria-pressed', String(Number(button.dataset.index) === slideIndex)));
+}
+
+function setExpanded(on) {
+  const stage = $('#ak-stage');
+  if (on === stage.classList.contains('ak-expanded')) return;
+  if (on) {
+    lightboxScrollY = window.scrollY;
+    stage.classList.add('ak-expanded');
+    document.body.style.top = `-${lightboxScrollY}px`;
+    document.body.classList.add('ak-lightbox-open');
+    // Isolate siblings at each level without making the image's ancestors inert.
+    for (let branch = stage; branch.parentElement; branch = branch.parentElement) {
+      for (const sibling of branch.parentElement.children) {
+        if (sibling !== branch && !sibling.inert) {
+          sibling.inert = true;
+          isolatedElements.push(sibling);
+        }
+      }
+      if (branch.parentElement === document.body) break;
+    }
+  } else {
+    stage.classList.remove('ak-expanded');
+    isolatedElements.splice(0).forEach(element => { element.inert = false; });
+    document.body.classList.remove('ak-lightbox-open');
+    document.body.style.top = '';
+    window.scrollTo(0, lightboxScrollY);
+    requestAnimationFrame(() => window.scrollTo(0, lightboxScrollY));
+  }
+  stage.setAttribute('aria-pressed', String(on));
+  stage.setAttribute('aria-label', on ? 'Закрыть увеличенное изображение' : 'Увеличить изображение');
+  stage.focus({ preventScroll: true });
+}
+
+function route(name, remember = true, focusHeading = true) {
+  if (!routes.includes(name)) {
+    name = 'about';
+    history.replaceState(null, '', '#about');
+  }
+  setExpanded(false);
+  current = name;
+  if (remember && location.hash !== '#' + name) history.pushState(null, '', '#' + name);
+  document.title = (projects[name] ? projects[name].name : name === 'projects' ? 'Проекты' : name === 'experience' ? 'Опыт' : 'Обо мне') + ' — Алексей Корепанов';
+  $('#ak-about').hidden = name !== 'about';
+  $('#ak-projects').hidden = name !== 'projects';
+  $('#ak-experience').hidden = name !== 'experience';
+  $('#ak-case').hidden = !projects[name];
+  root.querySelectorAll('.ak-nav [data-route]').forEach(button => {
+    if (button.dataset.route === (projects[name] ? 'projects' : name)) button.setAttribute('aria-current', 'page');
+    else button.removeAttribute('aria-current');
+  });
+  if (projects[name]) {
+    const project = projects[name];
+    $('#ak-case-label').textContent = 'НЕФТЕГАЗОВАЯ ОТРАСЛЬ / B2B';
+    $('#ak-case-name').textContent = project.name;
+    $('#ak-case-subtitle').textContent = project.subtitle;
+    $('#ak-case-meta').innerHTML = project.meta.map((value, i) => `<div><span>${['Роль', 'Продолжительность', 'Команда'][i]}</span>${value}</div>`).join('');
+    $('#ak-case-body').innerHTML = project.body;
+    $('#ak-next').dataset.route = project.next;
+    $('#ak-next').textContent = `${projects[project.next].name} →`;
+    $('#ak-thumbs').innerHTML = project.slides.map((slide, i) => `<button class="ak-thumb" data-index="${i}" aria-label="Слайд ${i+1}: ${slide[1]}" aria-pressed="false"><img src="${media[slide[0]]}" alt=""></button>`).join('');
+    showSlide(0);
+  }
+  requestAnimationFrame(() => {
+    root.scrollIntoView({ block: 'start', behavior: 'instant' });
+    if (focusHeading) {
+      const heading = projects[name] ? $('#ak-case-name') : $(`#ak-${name} h1`);
+      heading.tabIndex = -1;
+      heading.focus({ preventScroll: true });
+    }
+  });
+}
+
+root.addEventListener('click', event => {
+  const target = event.target instanceof Element ? event.target : null;
+  if (!target) return;
+  const routeTarget = target.closest('[data-route]');
+  if (routeTarget && root.contains(routeTarget)) { route(routeTarget.dataset.route); return; }
+  if (target.closest('#ak-stage')) { setExpanded(!$('#ak-stage').classList.contains('ak-expanded')); return; }
+  const button = target.closest('button');
+  if (button && root.contains(button) && button.dataset.index !== undefined) showSlide(Number(button.dataset.index));
+});
+root.addEventListener('keydown', event => {
+  const stage = $('#ak-stage');
+  if (stage.classList.contains('ak-expanded')) {
+    if (event.key === 'Escape') { event.preventDefault(); setExpanded(false); return; }
+    if (event.key === 'Tab') { event.preventDefault(); stage.focus({ preventScroll: true }); return; }
+  }
+  if (event.target === stage && ['Enter', ' '].includes(event.key)) {
+    event.preventDefault(); setExpanded(!stage.classList.contains('ak-expanded')); return;
+  }
+  const project = event.target instanceof Element ? event.target.closest('.ak-project-row[data-route]') : null;
+  if (project && event.target === project && ['Enter', ' '].includes(event.key)) {
+    event.preventDefault(); route(project.dataset.route); return;
+  }
+  if (!projects[current] || !(event.target instanceof Element) || !event.target.closest('.ak-gallery')) return;
+  if (event.key === 'ArrowRight') { event.preventDefault(); showSlide(slideIndex + 1); }
+  if (event.key === 'ArrowLeft') { event.preventDefault(); showSlide(slideIndex - 1); }
+});
+function routeFromLocation() {
+  const name = location.hash.slice(1) || 'about';
+  if (name !== current) route(name, false);
+}
+window.addEventListener('popstate', routeFromLocation);
+window.addEventListener('hashchange', routeFromLocation);
+route(location.hash.slice(1) || 'about', false, false);
 })();
