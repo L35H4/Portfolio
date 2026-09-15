@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const publicFiles = new Set(['index.html', '404.html', 'resume.pdf', 'robots.txt', 'sitemap.xml', 'CNAME', '.nojekyll']);
+const cleanRoutes = new Set(['about', 'projects', 'experience', 'epps', 'grad', 'earm']);
 const types = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.svg': 'image/svg+xml', '.png': 'image/png', '.webp': 'image/webp', '.pdf': 'application/pdf', '.xml': 'application/xml; charset=utf-8', '.txt': 'text/plain; charset=utf-8' };
 
 // Serve the existing production files, never the repository or private context.
@@ -26,7 +27,9 @@ export function createPreviewServer(directory = root) {
       response.end('Bad request');
       return;
     }
-    const allowed = publicFiles.has(relative) || (/^assets\//.test(relative) && !relative.split('/').some(part => part.startsWith('.')));
+    const cleanRoute = relative.replace(/\/$/, '');
+    if (cleanRoutes.has(cleanRoute)) relative = `${cleanRoute}/index.html`;
+    const allowed = publicFiles.has(relative) || [...cleanRoutes].some(route => relative === `${route}/index.html`) || (/^assets\//.test(relative) && !relative.split('/').some(part => part.startsWith('.')));
     const candidate = path.resolve(directory, relative);
     try {
       if (!allowed || relative.includes('\\') || !candidate.startsWith(path.resolve(directory) + path.sep)) throw new Error('Not public');

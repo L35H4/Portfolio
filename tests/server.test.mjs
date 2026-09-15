@@ -14,6 +14,10 @@ test('clean preview serves production assets and protects local files', async t 
   for (const asset of ['/assets/site.css', '/assets/site.js', '/assets/%D0%95%D0%90%D0%A0%D0%9C_logo.svg', '/resume.pdf']) {
     const response = await fetch(base + asset); assert.equal(response.status, 200, asset);
   }
+  for (const route of ['/about', '/projects', '/experience', '/epps', '/grad', '/earm']) {
+    const response = await fetch(base + route); assert.equal(response.status, 200, route);
+    assert.match(await response.text(), /Портфолио Алексея Корепанова/);
+  }
   for (const privatePath of ['/.git/config', '/.local-context/conversations/main.md', '/PROJECT_CONTEXT.md', '/package.json', '/assets/%2e%2e/.git/config', '/missing-page']) {
     const response = await fetch(base + privatePath); assert.equal(response.status, 404, privatePath);
     assert.match(await response.text(), /Страница не найдена/);

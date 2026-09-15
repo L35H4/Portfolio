@@ -1,15 +1,21 @@
 
 (()=>{
 const root=document.getElementById('ak-portfolio-v2');
-const media={"epps-after": "assets/epps-after.webp", "epps-before": "assets/epps-before.webp", "epps-dark": "assets/epps-dark.webp", "epps-light": "assets/epps-light.webp", "epps-comparison": "assets/epps-comparison.webp", "grad-tablet": "assets/grad-tablet.webp", "grad-workspace": "assets/grad-workspace.webp", "grad-table": "assets/grad-table.webp", "grad-kanban": "assets/grad-kanban.webp", "grad-files": "assets/grad-files.webp", "earm-report": "assets/earm-report.webp", "earm-monitoring": "assets/earm-monitoring.webp", "earm-losses": "assets/earm-losses.webp", "earm-energy": "assets/earm-energy.webp", "earm-expertise": "assets/earm-expertise.webp", "earm-prototype": "assets/earm-prototype.webp", "preview-epps": "assets/preview-epps.webp", "preview-grad": "assets/preview-grad.webp", "preview-earm": "assets/preview-earm.webp", "logo-epps": "assets/EPPS_logo.svg", "logo-grad": "assets/GRAD_logo.svg", "logo-earm": "assets/ЕАРМ_logo.svg"};
+const media={"epps-02": "assets/epps-02.webp", "epps-03": "assets/epps-03.webp", "epps-05": "assets/epps-05.webp", "epps-06": "assets/epps-06.webp", "epps-08": "assets/epps-08.webp", "epps-10": "assets/epps-10.webp", "epps-11": "assets/epps-11.webp", "epps-12": "assets/epps-12.webp", "epps-13": "assets/epps-13.webp", "epps-14": "assets/epps-14.webp", "epps-15": "assets/epps-15.webp", "grad-tablet": "assets/grad-tablet.webp", "grad-workspace": "assets/grad-workspace.webp", "grad-table": "assets/grad-table.webp", "grad-kanban": "assets/grad-kanban.webp", "grad-files": "assets/grad-files.webp", "earm-report": "assets/earm-report.webp", "earm-monitoring": "assets/earm-monitoring.webp", "earm-losses": "assets/earm-losses.webp", "earm-energy": "assets/earm-energy.webp", "earm-expertise": "assets/earm-expertise.webp", "earm-prototype": "assets/earm-prototype.webp", "preview-epps": "assets/epps-02.webp", "preview-grad": "assets/preview-grad.webp", "preview-earm": "assets/preview-earm.webp", "logo-epps": "assets/EPPS_logo.svg", "logo-grad": "assets/GRAD_logo.svg", "logo-earm": "assets/ЕАРМ_logo.svg"};
 const section=(h,p)=>`<section class="ak-section"><h2>${h}</h2><div class="ak-copy">${p}</div></section>`;
 const projects={
 epps:{name:'ЕППС',subtitle:'Платформа мониторинга и планирования',summary:'Полная пересборка интерфейса и перезапуск проекта под расширенные требования бизнеса.',tags:'Нефтегазовая отрасль / B2B / B2C',meta:['Продуктовый дизайнер','1,5 года + поддержка','1 дизайнер'],next:'grad',slides:[
-['epps-after','Новая карточка проекта','Пересобрал карточку под растущий объём данных: показатели, объекты, календарный план и этапы. Компоновку и адаптивное поведение согласовал с разработчиками.'],
-['epps-before','С чего началась работа','Макет на момент моего подключения. При росте количества полей и объектов прежняя компоновка требовала переработки. В реализации возникала прокрутка внутри панелей.'],
-['epps-dark','Этапы по нескольким объектам','Обзор этапов в единой сетке. Цветовые состояния и индикаторы дополняют данные по объектам; оформление подчиняется общим правилам проекта.'],
-['epps-light','Светлая тема','Добавил светлую тему. Та же структура и система состояний работают с другой палитрой - здесь они показаны на экране обзора этапов.'],
-['epps-comparison','Сравнение версий плана','Графики и таблица показывают значения двух версий и отклонения. Этот экран иллюстрирует работу с аналитикой в обновлённом интерфейсе.']],
+['epps-02','Статистика и сравнение показателей',''],
+['epps-03','Сводный дашборд',''],
+['epps-05','Детальный прогноз по скважинам',''],
+['epps-06','План-факт по этапам',''],
+['epps-08','Общая статистика фонда',''],
+['epps-10','Этапы строительства бизнес-кейса',''],
+['epps-11','Светлая тема: этапы строительства',''],
+['epps-12','Реестр бизнес-кейсов',''],
+['epps-13','Светлая тема: реестр бизнес-кейсов',''],
+['epps-14','Справка по статусам и шагам',''],
+['epps-15','Светлая тема: справка по статусам','']],
 body:section('Задача','<p>Интерфейс не выдерживал роста функциональной нагрузки. Принятые решения мешали ходу разработки. Было необходимо полностью переработать интерфейс под новые бизнес-требования в условиях высокой неопределённости.</p>')+section('Что изменил','<p>Придумал айдентику проекта. Сформировал и задокументировал масштабируемые правила проектирования UI. Перевёл всё на дизайн-систему Consta и адаптировал её под нужды проекта. Постоянно находился на связи с бизнесом и командой разработки.</p>')+section('Результат','<p>Проект успешно прошёл несколько стадий MVP и вышел на этап B2C, на котором развивается и масштабируется до сих пор.</p>')},
 grad:{name:'ГРАД',subtitle:'Платформа мониторинга и анализа',summary:'Интеграция и создание новых геолого-геофизических инструментов в рамках существующего проекта.',tags:'Нефтегазовая отрасль / B2B / B2C',meta:['Продуктовый дизайнер','2 года','6 дизайнеров'],next:'earm',slides:[
 ['grad-tablet','Геофизический планшет','Один из модулей, дизайн которых я создал с нуля. В рабочей области представлены кривые, шкалы глубины, литология, пласты и интервалы перфорации.'],
@@ -25,12 +31,17 @@ earm:{name:'ЕАРМ',subtitle:'Платформа мониторинга и п�
 ['earm-energy','Энергопотребление','Графики фактических и расчётных показателей, отклонения и индикаторы диапазонов. Оформление согласовано с существующей системой заказчика.'],
 ['earm-expertise','Экспертиза скважины','Несколько технических показателей на временной шкале и боковая панель с параметрами. Пример высокой информационной нагрузки в модуле.'],
 ['earm-prototype','Интерактивный прототип','По обязательному требованию заказчика весь дизайн поддерживался как большой кликабельный прототип. При итерациях обновлялись и экраны, и переходы между ними.']],
-body:section('Задача','<p>Спроектировать дашборды для анализа показателей скважин, фильтрации данных и выгрузки отчётов.</p>')+section('Что сделал','<p>Унифицировал интерфейс и фильтрацию, описал логику экранов вместе с аналитиком и подготовил интерактивный прототип.</p>')+section('Результат','<p>Функционал вышел в продакшн и продолжает использоваться без изменений.</p>')}
+body:section('Задача','<p>Было необходимо создать новые модули и инструменты в рамках существующей системы с высокой информационной и функциональной нагрузкой в условиях высокой неопределённости.</p>')+section('Что сделал','<p>Успешно спроектировал ряд отдельных модулей мониторинга в рамках существующей системы. Дополнил дизайн-систему общими правилами, задокументировал их и описал поведение. Постоянно находился на связи с бизнесом и командой разработки.</p>')+section('Результат','<p>Проект успешно прошёл несколько стадий MVP и вышел на этап B2C, на котором развивается и масштабируется до сих пор.</p>')}
 };
 const $ = selector => root.querySelector(selector);
 let current = 'about', slideIndex = 0, lightboxScrollY = 0;
 const isolatedElements = [];
 const routes = ['about', 'projects', 'experience', ...Object.keys(projects)];
+const pathForRoute = name => `/${name}`;
+const placeholderCaption = {
+  title: 'Описание',
+  copy: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+};
 
 $('#ak-project-list').innerHTML = Object.entries(projects).map(([id, p]) => `<article class="ak-project-row" data-route="${id}" role="link" tabindex="0" aria-label="Открыть проект ${p.name}"><div class="ak-project-copy"><h2 class="ak-project-logo ak-project-logo-${id}">${id === 'earm' ? p.name : `<img src="${media['logo-'+id]}" alt="${p.name}">`}</h2><h3>${p.subtitle}</h3><p class="ak-project-summary">${p.summary}</p><p class="ak-project-tags">${p.tags}</p></div><div class="ak-preview"><img src="${media['preview-'+id]}" alt="Превью проекта ${p.name}"></div></article>`).join('');
 
@@ -40,8 +51,8 @@ function showSlide(index) {
   const slide = project.slides[slideIndex];
   $('#ak-slide').src = media[slide[0]];
   $('#ak-slide').alt = slide[1];
-  $('#ak-slide-title').textContent = slide[1];
-  $('#ak-slide-copy').textContent = slide[2];
+  $('#ak-slide-title').textContent = placeholderCaption.title;
+  $('#ak-slide-copy').textContent = placeholderCaption.copy;
   root.querySelectorAll('[data-index]').forEach(button => button.setAttribute('aria-pressed', String(Number(button.dataset.index) === slideIndex)));
 }
 
@@ -79,11 +90,11 @@ function setExpanded(on) {
 function route(name, remember = true, focusHeading = true) {
   if (!routes.includes(name)) {
     name = 'about';
-    history.replaceState(null, '', '#about');
+    history.replaceState(null, '', pathForRoute(name));
   }
   setExpanded(false);
   current = name;
-  if (remember && location.hash !== '#' + name) history.pushState(null, '', '#' + name);
+  if (remember && location.pathname !== pathForRoute(name)) history.pushState(null, '', pathForRoute(name));
   document.title = (projects[name] ? projects[name].name : name === 'projects' ? 'Проекты' : name === 'experience' ? 'Опыт' : 'Обо мне') + ' - Алексей Корепанов';
   $('#ak-about').hidden = name !== 'about';
   $('#ak-projects').hidden = name !== 'projects';
@@ -142,10 +153,9 @@ root.addEventListener('keydown', event => {
   if (event.key === 'ArrowLeft') { event.preventDefault(); showSlide(slideIndex - 1); }
 });
 function routeFromLocation() {
-  const name = location.hash.slice(1) || 'about';
+  const name = location.pathname.split('/').filter(Boolean)[0] || 'about';
   if (name !== current) route(name, false);
 }
 window.addEventListener('popstate', routeFromLocation);
-window.addEventListener('hashchange', routeFromLocation);
-route(location.hash.slice(1) || 'about', false, false);
+route(location.pathname.split('/').filter(Boolean)[0] || 'about', false, false);
 })();

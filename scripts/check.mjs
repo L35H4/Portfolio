@@ -10,7 +10,8 @@ const js = await readFile(path.join(root, 'assets/site.js'), 'utf8');
 const css = await readFile(path.join(root, 'assets/site.css'), 'utf8');
 const media = JSON.parse(js.match(/const media=(\{[^\n]*\});/)[1]);
 const references = new Set(Object.values(media));
-for (const filename of ['index.html', '404.html']) {
+const routePages = ['about', 'projects', 'experience', 'epps', 'grad', 'earm'].map(route => `${route}/index.html`);
+for (const filename of ['index.html', '404.html', ...routePages]) {
   const dom = new JSDOM(await readFile(path.join(root, filename), 'utf8'));
   const doc = dom.window.document;
   assert.equal(doc.documentElement.lang, 'ru', filename);
@@ -19,10 +20,19 @@ for (const filename of ['index.html', '404.html']) {
   assert.equal(new Set(ids).size, ids.length, `Duplicate ids: ${filename}`);
   for (const element of doc.querySelectorAll('[src], [href]')) {
     const url = element.getAttribute('src') ?? element.getAttribute('href');
-    if (url && !/^(https?:|mailto:|tel:|#)/.test(url)) references.add(url.replace(/^\//, '').split(/[?#]/)[0] || 'index.html');
+    if (url && !/^(https?:|mailto:|tel:|#)/.test(url)) {
+      const relative = url.replace(/^\//, '').split(/[?#]/)[0] || 'index.html';
+      references.add(['about', 'projects', 'experience', 'epps', 'grad', 'earm'].includes(relative) ? `${relative}/index.html` : relative);
+    }
   }
   for (const image of doc.querySelectorAll('img')) assert.ok(image.hasAttribute('alt'), `Missing image alt: ${filename}`);
   dom.window.close();
+}
+for (const route of ['about', 'projects', 'experience', 'epps', 'grad', 'earm']) {
+  const routeHtml = await readFile(path.join(root, route, 'index.html'), 'utf8');
+  assert.match(routeHtml, new RegExp(`<link rel="canonical" href="https://www\\.korepanov\\.art/${route}">`));
+  assert.match(routeHtml, /<base href="\/">/);
+  assert.doesNotMatch(routeHtml, /\/#(?:about|projects|experience|epps|grad|earm)/);
 }
 for (const [, url] of css.matchAll(/url\(['"]?([^)'"\s]+)['"]?\)/g)) {
   if (!/^(https?:|data:)/.test(url)) references.add(path.posix.normalize('assets/' + url));

@@ -145,11 +145,20 @@ body{min-height:100vh;background:linear-gradient(90deg,#131313 0%,#171b1e 55%,#2
 #ak-portfolio-v2 .ak-project-row:focus-visible{outline:2px solid var(--ak-accent);outline-offset:-2px}
 #ak-portfolio-v2 .ak-project-row:hover h2,#ak-portfolio-v2 .ak-project-row:focus-visible h2{color:var(--ak-accent)}
 #ak-portfolio-v2 .ak-preview{padding:0;background:transparent;border:0;border-radius:0}
-#ak-portfolio-v2 .ak-preview img{border-radius:5px}
+#ak-portfolio-v2 .ak-preview img{border-radius:5px;outline:2px solid transparent;outline-offset:-2px;transition:outline-color .18s ease}
+#ak-portfolio-v2 .ak-project-row:hover .ak-preview img,#ak-portfolio-v2 .ak-project-row:focus-visible .ak-preview img{outline-color:var(--ak-accent)}
 #ak-portfolio-v2 .ak-project-row .ak-project-logo{display:flex;align-items:center;height:76px;margin-bottom:36px;line-height:0}
 #ak-portfolio-v2 .ak-project-logo img{display:block;width:auto;max-width:100%}
-#ak-portfolio-v2 .ak-project-logo-epps img{height:72px}
-#ak-portfolio-v2 .ak-project-logo-grad img{height:61px}
+#ak-portfolio-v2 .ak-project-logo-epps{position:relative}
+#ak-portfolio-v2 .ak-project-logo-epps img{height:72px;transition:opacity .18s ease}
+#ak-portfolio-v2 .ak-project-logo-epps::after{content:"";position:absolute;left:0;bottom:0;width:calc(72px * 139 / 38);max-width:100%;height:72px;background:var(--ak-accent);opacity:0;pointer-events:none;-webkit-mask:url("EPPS_logo.svg") left bottom/contain no-repeat;mask:url("EPPS_logo.svg") left bottom/contain no-repeat;transition:opacity .18s ease}
+#ak-portfolio-v2 .ak-project-row:hover .ak-project-logo-epps img,#ak-portfolio-v2 .ak-project-row:focus-visible .ak-project-logo-epps img{opacity:0}
+#ak-portfolio-v2 .ak-project-row:hover .ak-project-logo-epps::after,#ak-portfolio-v2 .ak-project-row:focus-visible .ak-project-logo-epps::after{opacity:1}
+#ak-portfolio-v2 .ak-project-logo-grad{position:relative}
+#ak-portfolio-v2 .ak-project-logo-grad img{height:61px;transition:opacity .18s ease}
+#ak-portfolio-v2 .ak-project-logo-grad::after{content:"";position:absolute;left:0;bottom:0;width:calc(61px * 71 / 19);max-width:100%;height:61px;background:var(--ak-accent);opacity:0;pointer-events:none;-webkit-mask:url("GRAD_logo.svg") left bottom/contain no-repeat;mask:url("GRAD_logo.svg") left bottom/contain no-repeat;transition:opacity .18s ease}
+#ak-portfolio-v2 .ak-project-row:hover .ak-project-logo-grad img,#ak-portfolio-v2 .ak-project-row:focus-visible .ak-project-logo-grad img{opacity:0}
+#ak-portfolio-v2 .ak-project-row:hover .ak-project-logo-grad::after,#ak-portfolio-v2 .ak-project-row:focus-visible .ak-project-logo-grad::after{opacity:1}
 #ak-portfolio-v2 .ak-project-logo-earm{line-height:1.12}
 #ak-portfolio-v2 .ak-project-copy{align-self:center;min-width:0;max-width:480px}
 #ak-portfolio-v2 .ak-project-row .ak-project-summary{max-width:38ch;margin-bottom:12px;font-size:16px;line-height:1.6}
@@ -177,7 +186,7 @@ body.ak-lightbox-open #ak-portfolio-v2>main{z-index:100}
 #ak-portfolio-v2 .ak-stage.ak-expanded{position:fixed;inset:0;z-index:1000;width:auto;height:auto;padding:clamp(18px,3vw,52px);background:rgba(8,10,12,.88);border:0;border-radius:0;box-shadow:none;cursor:zoom-out}
 #ak-portfolio-v2 .ak-stage.ak-expanded img{width:100%;height:100%;max-width:100%;max-height:100%;object-fit:contain;border-radius:0}
 #ak-portfolio-v2 .ak-caption{margin:24px 0 28px}
-#ak-portfolio-v2 .ak-thumbs{display:flex;gap:12px;flex-wrap:nowrap;overflow-x:auto;padding:2px 2px 10px;scrollbar-width:thin}
+#ak-portfolio-v2 .ak-thumbs{display:flex;gap:12px;flex-wrap:wrap;overflow:visible;padding:2px}
 #ak-portfolio-v2 .ak-thumb{flex:0 0 124px;width:124px;padding:5px;background:transparent}
 #ak-portfolio-v2 .ak-thumb img{width:100%;height:70px;object-fit:cover}
 
@@ -301,8 +310,10 @@ body{background:linear-gradient(90deg,#121314 0%,#17191b 55%,#1c2022 100%)}
 #ak-portfolio-v2 .ak-intro,#ak-portfolio-v2 .ak-page-title{position:relative}
 #ak-portfolio-v2 .ak-corner{position:absolute;top:var(--ak-page-rhythm);right:0;width:16px;height:16px;display:block;pointer-events:none}
 #ak-portfolio-v2 .ak-nav>a{padding:5px 10px}
-#ak-portfolio-v2 .ak-button.primary:hover,#ak-portfolio-v2 .ak-nav>a:hover{background:var(--ak-accent);color:#fff;font-weight:600}
+#ak-portfolio-v2 .ak-button.primary:hover,#ak-portfolio-v2 .ak-nav>a:hover{background:var(--ak-accent);color:#fff}
 #ak-portfolio-v2 .ak-button.primary:hover{border-color:var(--ak-accent)}
+#ak-portfolio-v2 .ak-nav button:not([aria-current=page]):hover{color:var(--ak-accent)}
+#ak-portfolio-v2 .ak-case-nav button:hover{color:var(--ak-accent)}
 
 /* Consistent heading-to-copy rhythm across page titles and content blocks. */
 #ak-portfolio-v2{--ak-heading-copy-gap:16px}
@@ -314,7 +325,7 @@ body{background:linear-gradient(90deg,#121314 0%,#17191b 55%,#1c2022 100%)}
 #ak-portfolio-v2 .ak-intro .ak-label{margin-bottom:var(--ak-heading-copy-gap)}
 #ak-portfolio-v2 .ak-project-row .ak-project-logo{align-items:flex-end;margin-bottom:var(--ak-heading-copy-gap)}
 #ak-portfolio-v2 .ak-project-row .ak-project-logo-earm{height:auto;align-items:flex-start;justify-content:flex-start;margin-bottom:13px;color:var(--ak-ink);font-size:clamp(48px,5vw,64px);font-weight:500;line-height:1.12;letter-spacing:-.035em}
-#ak-portfolio-v2 .ak-project-row:hover .ak-project-logo-earm,#ak-portfolio-v2 .ak-project-row:focus-visible .ak-project-logo-earm{color:var(--ak-ink)}
+#ak-portfolio-v2 .ak-project-row:hover .ak-project-logo-earm,#ak-portfolio-v2 .ak-project-row:focus-visible .ak-project-logo-earm{color:var(--ak-accent)}
 #ak-portfolio-v2 .ak-role-separator{margin-inline:.55em;color:var(--ak-secondary);opacity:.55}
 #ak-portfolio-v2 .ak-skills{grid-template-columns:repeat(3,max-content);grid-template-areas:"skills tools soft" "skills languages soft";align-items:start;justify-content:start;gap:24px clamp(40px,5vw,72px)}
 #ak-portfolio-v2 .ak-skills h3{margin-bottom:12px}

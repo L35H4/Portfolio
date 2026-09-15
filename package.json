@@ -7,6 +7,7 @@
   "packageManager": "pnpm@11.19.0",
   "scripts": {
     "start": "node scripts/serve.mjs",
+    "routes:generate": "node scripts/generate-route-pages.mjs",
     "check": "node --check assets/site.js && node scripts/check.mjs",
     "verify:quick": "pnpm run check",
     "test": "node --test",
