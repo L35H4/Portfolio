@@ -5,7 +5,7 @@ if (-not $desktop -or -not (Test-Path -LiteralPath $desktop)) { throw 'Не на
 $backup = Join-Path $site '.local-context\shortcut-backup'
 New-Item -ItemType Directory -Path $backup -Force | Out-Null
 $shell = New-Object -ComObject WScript.Shell
-foreach ($entry in @(@('Предпросмотр сайта', 'preview.ps1', ''), @('Опубликовать сайт', 'publish.ps1', ' -Pause'))) {
+foreach ($entry in @(@('Предпросмотр сайта', 'preview.ps1', ''), @('Опубликовать сайт', 'publish.ps1', ''))) {
     $linkPath = Join-Path $desktop ($entry[0] + '.lnk')
     if (Test-Path -LiteralPath $linkPath) {
         $backupPath = Join-Path $backup ($entry[0] + '-' + (Get-Date -Format 'yyyyMMdd-HHmmss') + '.lnk')

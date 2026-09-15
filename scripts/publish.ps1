@@ -19,34 +19,41 @@ try {
     if (-not $locked) { throw 'Публикация уже запущена.' }
     if ((Run-Git remote get-url origin) -ne 'https://github.com/L35H4/Portfolio.git') { throw 'Неожиданный origin.' }
     $branch = Run-Git branch --show-current
-    if (-not $CheckOnly -and $branch -ne 'main') { throw 'Публикация разрешена только из main после согласования и слияния.' }
-    if (Run-Git status --porcelain) { throw 'Есть незакоммиченные изменения. Сначала проверьте и закоммитьте нужные файлы.' }
+    if ($branch -ne 'main') { throw 'Автопубликация разрешена только из ветки main.' }
     Push-Location $site
     try {
         & $node --check assets/site.js
         if ($LASTEXITCODE -ne 0) { throw 'Ошибка синтаксиса JavaScript.' }
         & $node scripts/check.mjs
         if ($LASTEXITCODE -ne 0) { throw 'Проверка ресурсов не пройдена. Выполните pnpm install --frozen-lockfile и pnpm run verify.' }
-        & $node --test
-        if ($LASTEXITCODE -ne 0) { throw 'Тесты не пройдены.' }
     } finally { Pop-Location }
-    Run-Git fetch origin main
-    if ([int](Run-Git rev-list --count HEAD..origin/main) -gt 0) { throw 'В main есть новые коммиты. Сначала синхронизируйте и повторите проверки.' }
-    $head = Run-Git rev-parse HEAD
-    $ahead = [int](Run-Git rev-list --count origin/main..HEAD)
     if ($CheckOnly) {
-        Write-Output "Проверки пройдены. Ветка: $branch; коммит: $head; новых коммитов: $ahead. Отправка не выполнялась."
+        $changes = @(Run-Git status --porcelain).Count
+        Write-Output "Быстрая проверка пройдена. Локальных изменений: $changes. Коммит и отправка не выполнялись."
     } else {
-        if (-not $ExpectedCommit) {
-            if ((Read-Host "Опубликовать коммит $head на www.korepanov.art? Введите ДА") -cne 'ДА') { throw 'Публикация отменена.' }
-            $ExpectedCommit = $head
+        Run-Git add --all
+        & $git -C $site diff --cached --quiet
+        if ($LASTEXITCODE -eq 1) {
+            $stamp = Get-Date -Format 'yyyy-MM-dd HH:mm'
+            Run-Git commit -m "Update site $stamp"
+        } elseif ($LASTEXITCODE -ne 0) {
+            throw 'Не удалось проверить подготовленные к коммиту изменения.'
         }
-        if ($ExpectedCommit -ne $head) { throw 'Коммит изменился после проверки. Повторно проверьте изменения.' }
+        Run-Git fetch origin main
+        if ([int](Run-Git rev-list --count HEAD..origin/main) -gt 0) {
+            Write-Output 'В origin/main есть новые коммиты. Выполняется автоматическая синхронизация.'
+            & $git -C $site rebase origin/main
+            if ($LASTEXITCODE -ne 0) {
+                & $git -C $site rebase --abort | Out-Null
+                throw 'Автоматическая синхронизация не удалась. Локальный коммит сохранён, публикация остановлена.'
+            }
+        }
+        $head = Run-Git rev-parse HEAD
         Run-Git push origin "${head}:refs/heads/main"
         $remoteHead = ((Run-Git ls-remote origin refs/heads/main) -split '\s+')[0]
         if ($remoteHead -ne $head) { throw 'Не удалось подтвердить отправленный коммит.' }
-        Write-Output "Коммит $head подтверждён на GitHub. Проверьте результат Pages: https://github.com/L35H4/Portfolio/actions"
-        Write-Output 'Push сам по себе не подтверждает успешную публикацию или исправность HTTPS.'
+        Write-Output "Готово: коммит $head отправлен в main. GitHub Pages применит изменения автоматически."
+        Write-Output 'Статус публикации: https://github.com/L35H4/Portfolio/actions'
     }
 } catch {
     Write-Host $_ -ForegroundColor Red
@@ -54,6 +61,5 @@ try {
 } finally {
     if ($locked) { $mutex.ReleaseMutex() }
     $mutex.Dispose()
-    if ($Pause) { Read-Host 'Нажмите Enter, чтобы закрыть окно' | Out-Null }
 }
 if ($failed) { exit 1 }

@@ -8,6 +8,7 @@
   "scripts": {
     "start": "node scripts/serve.mjs",
     "check": "node --check assets/site.js && node scripts/check.mjs",
+    "verify:quick": "pnpm run check",
     "test": "node --test",
     "verify": "pnpm run check && pnpm test"
   },
