@@ -1,36 +1,48 @@
 
 (()=>{
 const root=document.getElementById('ak-portfolio-v2');
-const media={"epps-02": "assets/epps-02.webp", "epps-03": "assets/epps-03.webp", "epps-05": "assets/epps-05.webp", "epps-06": "assets/epps-06.webp", "epps-08": "assets/epps-08.webp", "epps-10": "assets/epps-10.webp", "epps-11": "assets/epps-11.webp", "epps-12": "assets/epps-12.webp", "epps-13": "assets/epps-13.webp", "epps-14": "assets/epps-14.webp", "epps-15": "assets/epps-15.webp", "grad-tablet": "assets/grad-tablet.webp", "grad-workspace": "assets/grad-workspace.webp", "grad-table": "assets/grad-table.webp", "grad-kanban": "assets/grad-kanban.webp", "grad-files": "assets/grad-files.webp", "earm-report": "assets/earm-report.webp", "earm-monitoring": "assets/earm-monitoring.webp", "earm-losses": "assets/earm-losses.webp", "earm-energy": "assets/earm-energy.webp", "earm-expertise": "assets/earm-expertise.webp", "earm-prototype": "assets/earm-prototype.webp", "preview-epps": "assets/epps-02.webp", "preview-grad": "assets/preview-grad.webp", "preview-earm": "assets/preview-earm.webp", "logo-epps": "assets/EPPS_logo.svg", "logo-grad": "assets/GRAD_logo.svg", "logo-earm": "assets/ЕАРМ_logo.svg"};
+const media={"preview-epps":"assets/gallery/epps/preview.webp","preview-grad":"assets/gallery/grad/preview.webp","preview-earm":"assets/gallery/earm/preview.webp","logo-epps":"assets/EPPS_logo.svg","logo-grad":"assets/GRAD_logo.svg","logo-earm":"assets/ЕАРМ_logo.svg"};
+const galleryFiles={"epps":[2,3,6,8,9,12,13,14,15,16,17],"grad":[2,4,7,8,10,23,24,25,26,27,29],"earm":[1,2,3,6,7,13,15,17,19]};
+const galleryImage=(project,number)=>`assets/gallery/${project}/${project}-${String(number).padStart(2,'0')}.webp`;
+const galleryThumb=(project,number)=>`assets/gallery/${project}/thumbs/${project}-${String(number).padStart(2,'0')}.webp`;
 const section=(h,p)=>`<section class="ak-section"><h2>${h}</h2><div class="ak-copy">${p}</div></section>`;
 const projects={
 epps:{name:'ЕППС',subtitle:'Платформа мониторинга и планирования',summary:'Полная пересборка интерфейса и перезапуск проекта под расширенные требования бизнеса.',tags:'Нефтегазовая отрасль / B2B / B2C',meta:['Продуктовый дизайнер','1,5 года + поддержка','1 дизайнер'],next:'grad',slides:[
-['epps-02','Статистика и сравнение показателей',''],
-['epps-03','Сводный дашборд',''],
-['epps-05','Детальный прогноз по скважинам',''],
-['epps-06','План-факт по этапам',''],
-['epps-08','Общая статистика фонда',''],
-['epps-10','Этапы строительства бизнес-кейса',''],
-['epps-11','Светлая тема: этапы строительства',''],
-['epps-12','Реестр бизнес-кейсов',''],
-['epps-13','Светлая тема: реестр бизнес-кейсов',''],
-['epps-14','Справка по статусам и шагам',''],
-['epps-15','Светлая тема: справка по статусам','']],
+[2,'Статистика и сравнение показателей',''],
+[3,'Планирование и контроль показателей',''],
+[6,'Планирование этапов',''],
+[8,'Статистика фонда',''],
+[9,'Реестр показателей',''],
+[12,'Матрица бизнес-кейсов',''],
+[13,'Светлая тема: матрица бизнес-кейсов',''],
+[14,'Справка по статусам и шагам',''],
+[15,'Светлая тема: справка по статусам',''],
+[16,'Планирование бизнес-кейса',''],
+[17,'Светлая тема: планирование бизнес-кейса','']],
 body:section('Задача','<p>Интерфейс не выдерживал роста функциональной нагрузки. Принятые решения мешали ходу разработки. Было необходимо полностью переработать интерфейс под новые бизнес-требования в условиях высокой неопределённости.</p>')+section('Что изменил','<p>Придумал айдентику проекта. Сформировал и задокументировал масштабируемые правила проектирования UI. Перевёл всё на дизайн-систему Consta и адаптировал её под нужды проекта. Постоянно находился на связи с бизнесом и командой разработки.</p>')+section('Результат','<p>Проект успешно прошёл несколько стадий MVP и вышел на этап B2C, на котором развивается и масштабируется до сих пор.</p>')},
 grad:{name:'ГРАД',subtitle:'Платформа мониторинга и анализа',summary:'Интеграция и создание новых геолого-геофизических инструментов в рамках существующего проекта.',tags:'Нефтегазовая отрасль / B2B / B2C',meta:['Продуктовый дизайнер','2 года','6 дизайнеров'],next:'earm',slides:[
-['grad-tablet','Геофизический планшет','Один из модулей, дизайн которых я создал с нуля. В рабочей области представлены кривые, шкалы глубины, литология, пласты и интервалы перфорации.'],
-['grad-workspace','Карта и планшет в рабочем пространстве','Пример состава инструментов ГРАД: карта и данные по скважине показаны рядом. Экран иллюстрирует контекст платформы; мой вклад охватывал множество новых модулей и доработок.'],
-['grad-table','Сводная таблица','Пример интерфейса работы с данными: показатели, значения и панель условного оформления столбца. Такие насыщенные рабочие области входят в состав платформы.'],
-['grad-kanban','Канбан','Представление данных по этапам с настройкой группировки, меток и подписей. Ещё один пример инструментов в составе большого продукта.'],
-['grad-files','Масштаб платформы','Каталог файлов команды. Крупные модули велись отдельно из-за объёма макетов. Это структура общего продукта, а не перечень модулей, созданных мной единолично.']],
+[2,'Настройка рабочего процесса',''],
+[4,'Геофизический планшет','Один из модулей, дизайн которых я создал с нуля. В рабочей области представлены кривые, шкалы глубины, литология, пласты и интервалы перфорации.'],
+[7,'Сравнение скважин',''],
+[8,'Аналитический дашборд',''],
+[10,'Сводная таблица','Пример интерфейса работы с данными в насыщенной рабочей области платформы.'],
+[23,'Карта участков',''],
+[24,'Карта скважин',''],
+[25,'Анализ данных на карте',''],
+[26,'Карта и планшет в рабочем пространстве','Пример состава инструментов ГРАД: карта и данные по скважине показаны рядом.'],
+[27,'Динамика показателей',''],
+[29,'Масштаб платформы','Крупные модули велись отдельно из-за объёма макетов. Это структура общего продукта, а не перечень модулей, созданных мной единолично.']],
 body:section('Задача','<p>Было необходимо интегрироваться в существующую команду дизайнеров для долгосрочной совместной работы. Требовалось создание новых модулей и инструментов в рамках существующей системы с высокой информационной и функциональной нагрузкой.</p>')+section('Что сделал','<p>Успешно спроектировал несколько больших отдельных модулей в рамках существующей системы. Дополнил дизайн-систему под общие правила, задокументировал правила и поведение. Вёл работу и принимал решения по всей системе в рамках отдельных задач. Постоянно находился на связи с бизнесом и командой разработки.</p>')+section('Результат','<p>Проект успешно прошёл несколько стадий MVP и вышел на этап B2C, на котором развивается и масштабируется до сих пор.</p>')},
 earm:{name:'ЕАРМ',subtitle:'Платформа мониторинга и подготовки отчетности',summary:'Интеграция и создание новых модулей мониторинга в рамках существующего проекта.',tags:'Нефтегазовая отрасль / B2B',meta:['Продуктовый дизайнер','1,5 года','1 дизайнер'],next:'epps',slides:[
-['earm-report','Часто ремонтируемый фонд','Пользователь анализирует динамику и таблицу скважин, задаёт период и фильтры, добавляет комментарии. Итог - Excel-отчёт с графиками и таблицей для внутренних бизнес-процессов.'],
-['earm-monitoring','Мониторинг мероприятий','График показателей расположен над реестром с исполнителями, статусами и датами. На отдельных экранах модуля доступны изменения значений и комментариев.'],
-['earm-losses','Распределение потерь','Дашборд показывает данные по категориям, причинам и месторождениям. Разные разрезы помогают рассматривать показатели в нужном рабочем контексте.'],
-['earm-energy','Энергопотребление','Графики фактических и расчётных показателей, отклонения и индикаторы диапазонов. Оформление согласовано с существующей системой заказчика.'],
-['earm-expertise','Экспертиза скважины','Несколько технических показателей на временной шкале и боковая панель с параметрами. Пример высокой информационной нагрузки в модуле.'],
-['earm-prototype','Интерактивный прототип','По обязательному требованию заказчика весь дизайн поддерживался как большой кликабельный прототип. При итерациях обновлялись и экраны, и переходы между ними.']],
+[1,'Экспертиза скважины','Несколько технических показателей на временной шкале и боковая панель с параметрами.'],
+[2,'Таблица показателей',''],
+[3,'Часто ремонтируемый фонд','Пользователь анализирует показатели и таблицу скважин, задаёт период и фильтры.'],
+[6,'Распределение по категориям',''],
+[7,'Аналитика фонда',''],
+[13,'Мониторинг показателей',''],
+[15,'Сводный аналитический дашборд',''],
+[17,'Сравнение плановых и фактических показателей',''],
+[19,'Интерактивный прототип','По обязательному требованию заказчика весь дизайн поддерживался как большой кликабельный прототип.']],
 body:section('Задача','<p>Было необходимо создать новые модули и инструменты в рамках существующей системы с высокой информационной и функциональной нагрузкой в условиях высокой неопределённости.</p>')+section('Что сделал','<p>Успешно спроектировал ряд отдельных модулей мониторинга в рамках существующей системы. Дополнил дизайн-систему общими правилами, задокументировал их и описал поведение. Постоянно находился на связи с бизнесом и командой разработки.</p>')+section('Результат','<p>Проект успешно прошёл несколько стадий MVP и вышел на этап B2C, на котором развивается и масштабируется до сих пор.</p>')}
 };
 const $ = selector => root.querySelector(selector);
@@ -39,17 +51,16 @@ const isolatedElements = [];
 const routes = ['about', 'projects', 'experience', ...Object.keys(projects)];
 const pathForRoute = name => `/${name}`;
 const placeholderCaption = {
-  title: 'Описание',
-  copy: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+  title: 'Заголовок',
+  copy: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
 };
-
-$('#ak-project-list').innerHTML = Object.entries(projects).map(([id, p]) => `<article class="ak-project-row" data-route="${id}" role="link" tabindex="0" aria-label="Открыть проект ${p.name}"><div class="ak-project-copy"><h2 class="ak-project-logo ak-project-logo-${id}">${id === 'earm' ? p.name : `<img src="${media['logo-'+id]}" alt="${p.name}">`}</h2><h3>${p.subtitle}</h3><p class="ak-project-summary">${p.summary}</p><p class="ak-project-tags">${p.tags}</p></div><div class="ak-preview"><img src="${media['preview-'+id]}" alt="Превью проекта ${p.name}"></div></article>`).join('');
+$('#ak-project-list').innerHTML = Object.entries(projects).map(([id, p]) => `<article class="ak-project-row" data-route="${id}" role="link" tabindex="0" aria-label="Открыть проект ${p.name}"><div class="ak-project-copy"><h2 class="ak-project-logo ak-project-logo-${id}">${id === 'earm' ? p.name : `<img src="${media['logo-'+id]}" alt="${p.name}">`}</h2><h3>${p.subtitle}</h3><p class="ak-project-summary">${p.summary}</p><p class="ak-project-tags">${p.tags}</p></div><div class="ak-preview"><img src="${media['preview-'+id]}" alt="Превью проекта ${p.name}" loading="lazy" decoding="async"></div></article>`).join('');
 
 function showSlide(index) {
   const project = projects[current];
   slideIndex = (index + project.slides.length) % project.slides.length;
   const slide = project.slides[slideIndex];
-  $('#ak-slide').src = media[slide[0]];
+  $('#ak-slide').src = galleryImage(current, slide[0]);
   $('#ak-slide').alt = slide[1];
   $('#ak-slide-title').textContent = placeholderCaption.title;
   $('#ak-slide-copy').textContent = placeholderCaption.copy;
@@ -113,7 +124,7 @@ function route(name, remember = true, focusHeading = true) {
     $('#ak-case-body').innerHTML = project.body;
     $('#ak-next').dataset.route = project.next;
     $('#ak-next').textContent = 'Следующий проект →';
-    $('#ak-thumbs').innerHTML = project.slides.map((slide, i) => `<button class="ak-thumb" data-index="${i}" aria-label="Слайд ${i+1}: ${slide[1]}" aria-pressed="false"><img src="${media[slide[0]]}" alt=""></button>`).join('');
+    $('#ak-thumbs').innerHTML = project.slides.map((slide, i) => `<button class="ak-thumb" data-index="${i}" aria-label="Слайд ${i+1}: ${slide[1]}" aria-pressed="false"><img src="${galleryThumb(current,slide[0])}" alt="" loading="lazy" decoding="async"></button>`).join('');
     showSlide(0);
   }
   requestAnimationFrame(() => {

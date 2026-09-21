@@ -59,10 +59,15 @@ test('lightbox traps Tab, isolates the background and restores focus and scroll'
 test('gallery thumbnails and arrows select slides and wrap around', t => {
   const dom = loadSite('epps'); t.after(() => dom.window.close());
   const { window } = dom; const doc = window.document; const stage = doc.querySelector('#ak-stage');
+  assert.equal(doc.querySelectorAll('#ak-thumbs button').length, 11);
+  assert.match(doc.querySelector('#ak-thumbs img').src, /gallery\/epps\/thumbs\/epps-02.webp$/);
+  assert.match(doc.querySelector('#ak-slide').src, /gallery\/epps\/epps-02.webp$/);
+  assert.equal(doc.querySelector('#ak-slide-title').textContent, 'Заголовок');
+  assert.equal(doc.querySelector('#ak-slide-copy').textContent, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.');
   doc.querySelector('[data-index="1"]').click();
   assert.match(doc.querySelector('#ak-slide').src, /epps-03.webp$/);
   key(window, stage, 'ArrowLeft'); key(window, stage, 'ArrowLeft');
-  assert.match(doc.querySelector('#ak-slide').src, /epps-15.webp$/);
+  assert.match(doc.querySelector('#ak-slide').src, /epps-17.webp$/);
   assert.equal(doc.querySelectorAll('#ak-thumbs [aria-pressed="true"]').length, 1);
 });
 test('browser history selects the requested screen', t => {

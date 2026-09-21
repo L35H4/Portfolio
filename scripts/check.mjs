@@ -10,6 +10,14 @@ const js = await readFile(path.join(root, 'assets/site.js'), 'utf8');
 const css = await readFile(path.join(root, 'assets/site.css'), 'utf8');
 const media = JSON.parse(js.match(/const media=(\{[^\n]*\});/)[1]);
 const references = new Set(Object.values(media));
+const galleryFiles = JSON.parse(js.match(/const galleryFiles=(\{[^\n]*\});/)[1]);
+for (const [project, numbers] of Object.entries(galleryFiles)) {
+  for (const number of numbers) {
+    const filename = `${project}-${String(number).padStart(2, '0')}.webp`;
+    references.add(`assets/gallery/${project}/${filename}`);
+    references.add(`assets/gallery/${project}/thumbs/${filename}`);
+  }
+}
 const routePages = ['about', 'projects', 'experience', 'epps', 'grad', 'earm'].map(route => `${route}/index.html`);
 for (const filename of ['index.html', '404.html', ...routePages]) {
   const dom = new JSDOM(await readFile(path.join(root, filename), 'utf8'));

@@ -2,6 +2,7 @@
 /.local-context/
 /PROJECT_CONTEXT.md
 /AGENTS.md
+/design-qa.md
 /node_modules/
 /.pnpm-store/
 /.env
