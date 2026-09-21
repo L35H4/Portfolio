@@ -1,6 +1,7 @@
 # Local ChatGPT history, source documents, drafts and helper scripts.
 /.local-context/
 /PROJECT_CONTEXT.md
+/AGENTS.md
 /node_modules/
 /.pnpm-store/
 /.env
