@@ -353,6 +353,17 @@ body{background:linear-gradient(90deg,#121314 0%,#17191b 55%,#1c2022 100%)}
   #ak-portfolio-v2 #ak-about .ak-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
   #ak-portfolio-v2 #ak-about .ak-button{width:100%}
 }
+
+/* Compact circular portrait only at the stacked-button phone breakpoint. */
+@media(max-width:460px){
+  #ak-portfolio-v2 #ak-about .ak-intro{gap:18px;padding-block:24px}
+  #ak-portfolio-v2 #ak-about .ak-photo{justify-self:center;width:clamp(152px,42vw,180px);max-width:180px}
+  #ak-portfolio-v2 #ak-about .ak-photo img{width:100%;height:auto;aspect-ratio:1;border-radius:50%;object-fit:cover;object-position:center 36%}
+  #ak-portfolio-v2 #ak-about .ak-intro h1,
+  #ak-portfolio-v2 #ak-about .ak-intro .ak-label{margin-bottom:12px}
+  #ak-portfolio-v2 #ak-about .ak-intro .ak-lead{line-height:1.45}
+  #ak-portfolio-v2 #ak-about .ak-actions{margin-top:12px}
+}
 @media(max-width:460px){
   #ak-portfolio-v2 .ak-skills{grid-template-columns:minmax(max-content,1fr);grid-template-areas:"skills" "tools" "languages" "soft"}
 }
