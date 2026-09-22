@@ -19,7 +19,7 @@ epps:{name:'ЕППС',subtitle:'Платформа мониторинга и п�
 [15,'Светлая тема: справка по статусам',''],
 [16,'Планирование бизнес-кейса',''],
 [17,'Светлая тема: планирование бизнес-кейса','']],
-body:section('Задача','<p>Интерфейс не выдерживал роста функциональной нагрузки. Принятые решения мешали ходу разработки. Было необходимо полностью переработать интерфейс под новые бизнес-требования в условиях высокой неопределённости.</p>')+section('Что изменил','<p>Придумал айдентику проекта. Сформировал и задокументировал масштабируемые правила проектирования UI. Перевёл всё на дизайн-систему Consta и адаптировал её под нужды проекта. Постоянно находился на связи с бизнесом и командой разработки.</p>')+section('Результат','<p>Проект успешно прошёл несколько стадий MVP и вышел на этап B2C, на котором развивается и масштабируется до сих пор.</p>')},
+body:section('Задача','<p>Интерфейс не выдерживал роста функциональной нагрузки. Принятые решения мешали ходу разработки. Было необходимо полностью переработать интерфейс под новые бизнес-требования в условиях высокой неопределённости.</p>','task')+section('Что изменил','<p>Придумал айдентику проекта. Сформировал и задокументировал масштабируемые правила проектирования UI. Перевёл всё на дизайн-систему Consta и адаптировал её под нужды проекта. Постоянно находился на связи с бизнесом и командой разработки.</p>','action')+section('Результат','<p>Проект успешно прошёл несколько стадий MVP и вышел на этап B2C, на котором развивается и масштабируется до сих пор.</p>','result')},
 grad:{name:'ГРАД',subtitle:'Платформа мониторинга и анализа',summary:'Интеграция и создание новых геолого-геофизических инструментов в рамках существующего проекта.',tags:'Нефтегазовая отрасль / B2B / B2C',meta:['Продуктовый дизайнер','2 года','6 дизайнеров'],next:'earm',slides:[
 [2,'Настройка рабочего процесса',''],
 [4,'Геофизический планшет','Один из модулей, дизайн которых я создал с нуля. В рабочей области представлены кривые, шкалы глубины, литология, пласты и интервалы перфорации.'],
@@ -32,7 +32,7 @@ grad:{name:'ГРАД',subtitle:'Платформа мониторинга и а�
 [26,'Карта и планшет в рабочем пространстве','Пример состава инструментов ГРАД: карта и данные по скважине показаны рядом.'],
 [27,'Динамика показателей',''],
 [29,'Масштаб платформы','Крупные модули велись отдельно из-за объёма макетов. Это структура общего продукта, а не перечень модулей, созданных мной единолично.']],
-body:section('Задача','<p>Было необходимо интегрироваться в существующую команду дизайнеров для долгосрочной совместной работы. Требовалось создание новых модулей и инструментов в рамках существующей системы с высокой информационной и функциональной нагрузкой.</p>')+section('Что сделал','<p>Успешно спроектировал несколько больших отдельных модулей в рамках существующей системы. Дополнил дизайн-систему под общие правила, задокументировал правила и поведение. Вёл работу и принимал решения по всей системе в рамках отдельных задач. Постоянно находился на связи с бизнесом и командой разработки.</p>')+section('Результат','<p>Проект успешно прошёл несколько стадий MVP и вышел на этап B2C, на котором развивается и масштабируется до сих пор.</p>')},
+body:section('Задача','<p>Было необходимо интегрироваться в существующую команду дизайнеров для долгосрочной совместной работы. Требовалось создание новых модулей и инструментов в рамках существующей системы с высокой информационной и функциональной нагрузкой.</p>','task')+section('Что сделал','<p>Успешно спроектировал несколько больших отдельных модулей в рамках существующей системы. Дополнил дизайн-систему под общие правила, задокументировал правила и поведение. Вёл работу и принимал решения по всей системе в рамках отдельных задач. Постоянно находился на связи с бизнесом и командой разработки.</p>','action')+section('Результат','<p>Проект успешно прошёл несколько стадий MVP и вышел на этап B2C, на котором развивается и масштабируется до сих пор.</p>','result')},
 earm:{name:'ЕАРМ',subtitle:'Платформа мониторинга и подготовки отчетности',summary:'Интеграция и создание новых модулей мониторинга в рамках существующего проекта.',tags:'Нефтегазовая отрасль / B2B',meta:['Продуктовый дизайнер','1,5 года','1 дизайнер'],next:'epps',slides:[
 [1,'Экспертиза скважины','Несколько технических показателей на временной шкале и боковая панель с параметрами.'],
 [2,'Таблица показателей',''],
@@ -43,10 +43,10 @@ earm:{name:'ЕАРМ',subtitle:'Платформа мониторинга и п�
 [15,'Сводный аналитический дашборд',''],
 [17,'Сравнение плановых и фактических показателей',''],
 [19,'Интерактивный прототип','По обязательному требованию заказчика весь дизайн поддерживался как большой кликабельный прототип.']],
-body:section('Задача','<p>Было необходимо создать новые модули и инструменты в рамках существующей системы с высокой информационной и функциональной нагрузкой в условиях высокой неопределённости.</p>')+section('Что сделал','<p>Успешно спроектировал ряд отдельных модулей мониторинга в рамках существующей системы. Дополнил дизайн-систему общими правилами, задокументировал их и описал поведение. Постоянно находился на связи с бизнесом и командой разработки.</p>')+section('Результат','<p>Проект успешно прошёл несколько стадий MVP и вышел на этап B2C, на котором развивается и масштабируется до сих пор.</p>')}
+body:section('Задача','<p>Было необходимо создать новые модули и инструменты в рамках существующей системы с высокой информационной и функциональной нагрузкой в условиях высокой неопределённости.</p>','task')+section('Что сделал','<p>Успешно спроектировал ряд отдельных модулей мониторинга в рамках существующей системы. Дополнил дизайн-систему общими правилами, задокументировал их и описал поведение. Постоянно находился на связи с бизнесом и командой разработки.</p>','action')+section('Результат','<p>Проект успешно прошёл несколько стадий MVP и вышел на этап B2C, на котором развивается и масштабируется до сих пор.</p>','result')}
 };
 const $ = selector => root.querySelector(selector);
-let current = 'about', slideIndex = 0, lightboxScrollY = 0;
+let current = 'about', slideIndex = 0, lightboxScrollY = 0, slideZoom = 1, lastWheelAt = -Infinity;
 const isolatedElements = [];
 const routes = ['about', 'projects', 'experience', ...Object.keys(projects)];
 const pathForRoute = name => `/${name}`;
@@ -55,21 +55,40 @@ const placeholderCaption = {
   copy: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
 };
 $('#ak-project-list').innerHTML = Object.entries(projects).map(([id, p]) => `<article class="ak-project-row" data-route="${id}" role="link" tabindex="0" aria-label="Открыть проект ${p.name}"><div class="ak-project-copy"><h2 class="ak-project-logo ak-project-logo-${id}">${id === 'earm' ? p.name : `<img src="${media['logo-'+id]}" alt="${p.name}">`}</h2><h3>${p.subtitle}</h3><p class="ak-project-summary">${p.summary}</p><p class="ak-project-tags">${p.tags}</p></div><div class="ak-preview"><img src="${media['preview-'+id]}" alt="Превью проекта ${p.name}" loading="lazy" decoding="async"></div></article>`).join('');
+$('#ak-thumbs-prev')?.remove();
+$('#ak-thumbs-next')?.remove();
 
-function showSlide(index) {
+function resetSlideZoom() {
+  slideZoom = 1;
+  const image = $('#ak-slide');
+  image.style.setProperty('--ak-slide-zoom', '1');
+  image.style.setProperty('--ak-slide-origin-x', '50%');
+  image.style.setProperty('--ak-slide-origin-y', '50%');
+}
+
+function showSlide(index, direction = 0) {
   const project = projects[current];
+  resetSlideZoom();
   slideIndex = (index + project.slides.length) % project.slides.length;
   const slide = project.slides[slideIndex];
-  $('#ak-slide').src = galleryImage(current, slide[0]);
-  $('#ak-slide').alt = slide[1];
+  const image = $('#ak-slide');
+  image.src = galleryImage(current, slide[0]);
+  image.alt = slide[1];
   $('#ak-slide-title').textContent = placeholderCaption.title;
   $('#ak-slide-copy').textContent = placeholderCaption.copy;
   root.querySelectorAll('[data-index]').forEach(button => button.setAttribute('aria-pressed', String(Number(button.dataset.index) === slideIndex)));
+  if (direction && !window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) {
+    image.style.setProperty('--ak-slide-offset', `${direction * 24}px`);
+    image.classList.remove('ak-slide-shift');
+    void image.offsetWidth;
+    image.classList.add('ak-slide-shift');
+  }
 }
 
 function setExpanded(on) {
   const stage = $('#ak-stage');
   if (on === stage.classList.contains('ak-expanded')) return;
+  resetSlideZoom();
   if (on) {
     lightboxScrollY = window.scrollY;
     stage.classList.add('ak-expanded');
@@ -160,9 +179,32 @@ root.addEventListener('keydown', event => {
     event.preventDefault(); route(project.dataset.route); return;
   }
   if (!projects[current] || !(event.target instanceof Element) || !event.target.closest('.ak-gallery')) return;
-  if (event.key === 'ArrowRight') { event.preventDefault(); showSlide(slideIndex + 1); }
-  if (event.key === 'ArrowLeft') { event.preventDefault(); showSlide(slideIndex - 1); }
+  if (event.key === 'ArrowRight') { event.preventDefault(); showSlide(slideIndex + 1, 1); }
+  if (event.key === 'ArrowLeft') { event.preventDefault(); showSlide(slideIndex - 1, -1); }
 });
+$('#ak-stage').addEventListener('wheel', event => {
+  const stage = $('#ak-stage');
+  if (!projects[current]) return;
+  const delta = Math.abs(event.deltaY) >= Math.abs(event.deltaX) ? event.deltaY : event.deltaX;
+  if (Math.abs(delta) < 4) return;
+  if (event.ctrlKey) {
+    if (!stage.classList.contains('ak-expanded')) return;
+    event.preventDefault();
+    const rect = stage.getBoundingClientRect();
+    slideZoom = Math.min(4, Math.max(1, slideZoom + (delta < 0 ? .25 : -.25)));
+    const image = $('#ak-slide');
+    image.style.setProperty('--ak-slide-zoom', String(slideZoom));
+    image.style.setProperty('--ak-slide-origin-x', `${Math.max(0, Math.min(100, (event.clientX - rect.left) / rect.width * 100))}%`);
+    image.style.setProperty('--ak-slide-origin-y', `${Math.max(0, Math.min(100, (event.clientY - rect.top) / rect.height * 100))}%`);
+    return;
+  }
+  event.preventDefault();
+  const now = performance.now();
+  if (now - lastWheelAt < 240) return;
+  lastWheelAt = now;
+  const direction = delta > 0 ? 1 : -1;
+  showSlide(slideIndex + direction, direction);
+}, { passive: false });
 function routeFromLocation() {
   const name = location.pathname.split('/').filter(Boolean)[0] || 'about';
   if (name !== current) route(name, false);
