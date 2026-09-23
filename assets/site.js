@@ -82,8 +82,8 @@ window.addEventListener('pointermove', event => {
     if (!rect.width || !rect.height || window.getComputedStyle(brandControl).display === 'none') return;
     const x = Math.max(-1, Math.min(1, (brandPointerX - (rect.left + rect.width / 2)) / Math.max(window.innerWidth * .38, 1)));
     const y = Math.max(-1, Math.min(1, (brandPointerY - (rect.top + rect.height / 2)) / Math.max(window.innerHeight * .38, 1)));
-    brandControl.style.setProperty('--ak-logo-rotate-x', `${-y * 32}deg`);
-    brandControl.style.setProperty('--ak-logo-rotate-y', `${x * 32}deg`);
+    brandControl.style.setProperty('--ak-logo-rotate-x', `${-y * 24}deg`);
+    brandControl.style.setProperty('--ak-logo-rotate-y', `${x * 24}deg`);
     brandControl.style.setProperty('--ak-logo-shift-x', `${x * 2.8}px`);
     brandControl.style.setProperty('--ak-logo-shift-y', `${y * 2.8}px`);
     brandControl.style.setProperty('--ak-logo-shadow-x', `${-x * 10}px`);
@@ -212,28 +212,43 @@ function resetSlideZoom() {
   image.style.setProperty('--ak-slide-origin-y', '50%');
 }
 
+let slideRequest = 0, wheelTotal = 0, wheelConsumed = false;
 function showSlide(index, direction = 0) {
   const project = projects[current];
   resetSlideZoom();
   slideIndex = (index + project.slides.length) % project.slides.length;
   const slide = project.slides[slideIndex];
   const image = $('#ak-slide');
-  image.src = galleryImage(current, slide[0]);
-  image.alt = slide[1];
+  const request = ++slideRequest;
+  const source = galleryImage(current, slide[0]);
+  const commit = () => {
+    if (request !== slideRequest) return;
+    image.classList.remove('ak-slide-shift');
+    image.src = source;
+    image.alt = slide[1];
+    if (direction && !window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) {
+      void image.offsetWidth;
+      image.classList.add('ak-slide-shift');
+    }
+  };
+  // Keep the current image visible until the next bitmap is decoded.
+  const nextImage = new Image();
+  if (typeof nextImage.decode === 'function') {
+    nextImage.src = source;
+    nextImage.decode().then(commit).catch(() => {});
+  } else commit();
   $('#ak-slide-title').textContent = placeholderCaption.title;
   $('#ak-slide-copy').textContent = placeholderCaption.copy;
   root.querySelectorAll('[data-index]').forEach(button => button.setAttribute('aria-pressed', String(Number(button.dataset.index) === slideIndex)));
-  if (direction && !window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) {
-    image.style.setProperty('--ak-slide-offset', `${direction * 24}px`);
-    image.classList.remove('ak-slide-shift');
-    void image.offsetWidth;
-    image.classList.add('ak-slide-shift');
-  }
 }
 
 function setExpanded(on) {
   const stage = $('#ak-stage');
   if (on === stage.classList.contains('ak-expanded')) return;
+  wheelTotal = 0;
+  wheelConsumed = false;
+  lastWheelAt = -Infinity;
+  slidePointers.clear();
   resetSlideZoom();
   if (on) {
     lightboxScrollY = window.scrollY;
@@ -415,12 +430,14 @@ $('#ak-stage').addEventListener('wheel', event => {
   const expanded = stage.classList.contains('ak-expanded');
   if (!expanded) return;
   const delta = expanded && Math.abs(event.deltaY) >= Math.abs(event.deltaX) ? event.deltaY : event.deltaX;
-  if (Math.abs(delta) < 4) return;
+  event.preventDefault();
   if (event.ctrlKey) {
     if (!expanded) return;
     event.preventDefault();
     const rect = stage.getBoundingClientRect();
-    slideZoom = Math.min(4, Math.max(1, slideZoom + (delta < 0 ? .25 : -.25)));
+    slideZoom = Math.min(4, Math.max(1, slideZoom * Math.exp(-event.deltaY * .002)));
+    lastWheelAt = performance.now();
+    wheelConsumed = true;
     const image = $('#ak-slide');
     image.style.setProperty('--ak-slide-zoom', String(slideZoom));
     image.style.setProperty('--ak-slide-origin-x', `${Math.max(0, Math.min(100, (event.clientX - rect.left) / rect.width * 100))}%`);
@@ -429,9 +446,17 @@ $('#ak-stage').addEventListener('wheel', event => {
   }
   event.preventDefault();
   const now = performance.now();
-  if (now - lastWheelAt < 240) return;
+  if (now - lastWheelAt > 220) {
+    wheelTotal = 0;
+    wheelConsumed = false;
+  }
   lastWheelAt = now;
-  const direction = delta > 0 ? 1 : -1;
+  if (wheelConsumed) return;
+  const unit = event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? window.innerHeight : 1;
+  wheelTotal += delta * unit;
+  if (Math.abs(wheelTotal) < 48) return;
+  wheelConsumed = true;
+  const direction = wheelTotal > 0 ? 1 : -1;
   showSlide(slideIndex + direction, direction);
 }, { passive: false });
 function routeFromLocation() {

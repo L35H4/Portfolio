@@ -125,6 +125,23 @@ test('two-finger pinch zooms the expanded slide', t => {
   assert.equal(image.style.getPropertyValue('--ak-slide-zoom'), '1');
 });
 
+test('trackpad inertia advances only once until the gesture ends', t => {
+  const dom = loadSite('epps'); t.after(() => dom.window.close());
+  const { window } = dom; const doc = window.document;
+  const stage = doc.querySelector('#ak-stage');
+  let now = 0;
+  Object.defineProperty(window.performance, 'now', { value: () => now });
+  stage.click();
+  for (let i = 0; i < 30; i += 1) {
+    now += 30;
+    stage.dispatchEvent(new window.WheelEvent('wheel', { deltaY: 12, cancelable: true }));
+  }
+  assert.match(doc.querySelector('#ak-slide').src, /epps-03.webp$/);
+  now += 300;
+  stage.dispatchEvent(new window.WheelEvent('wheel', { deltaY: 120, cancelable: true }));
+  assert.match(doc.querySelector('#ak-slide').src, /epps-06.webp$/);
+});
+
 test('expanded gallery changes slides with the mouse wheel', t => {
   const dom = loadSite('epps'); t.after(() => dom.window.close());
   const { window } = dom; const doc = window.document; const stage = doc.querySelector('#ak-stage');
@@ -142,7 +159,7 @@ test('Ctrl plus mouse wheel zooms the expanded slide and resets on slide change'
   const zoom = new window.WheelEvent('wheel', { deltaY: -120, ctrlKey: true, clientX: 100, clientY: 100, cancelable: true });
   stage.dispatchEvent(zoom);
   assert.equal(zoom.defaultPrevented, true);
-  assert.equal(image.style.getPropertyValue('--ak-slide-zoom'), '1.25');
+  assert.ok(Math.abs(Number(image.style.getPropertyValue('--ak-slide-zoom')) - Math.exp(.24)) < .001);
   key(window, stage, 'ArrowRight');
   assert.equal(image.style.getPropertyValue('--ak-slide-zoom'), '1');
 });
