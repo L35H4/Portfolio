@@ -1,7 +1,14 @@
 ﻿$ErrorActionPreference = 'Stop'
 $site = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
 $desktop = [Environment]::GetFolderPath('Desktop')
-if (-not $desktop -or -not (Test-Path -LiteralPath $desktop)) { throw 'Не найдена папка рабочего стола текущего пользователя.' }
+if (-not $desktop -or -not (Test-Path -LiteralPath $desktop)) {
+    $desktopCandidates = @(
+        (Join-Path $env:USERPROFILE 'OneDrive\Desktop'),
+        (Join-Path $env:USERPROFILE 'Desktop')
+    )
+    $desktop = $desktopCandidates | Where-Object { Test-Path -LiteralPath $_ } | Select-Object -First 1
+}
+if (-not $desktop) { throw 'Не найдена папка рабочего стола текущего пользователя.' }
 $backup = Join-Path $site '.local-context\shortcut-backup'
 New-Item -ItemType Directory -Path $backup -Force | Out-Null
 $shell = New-Object -ComObject WScript.Shell
