@@ -46,7 +46,9 @@ earm:{name:'ЕАРМ',subtitle:'Платформа мониторинга и п�
 body:section('Задача','<p>Было необходимо создать новые модули и инструменты в рамках существующей системы с высокой информационной и функциональной нагрузкой в условиях высокой неопределённости.</p>','task')+section('Что сделал','<p>Успешно спроектировал ряд отдельных модулей мониторинга в рамках существующей системы. Дополнил дизайн-систему общими правилами, задокументировал их и описал поведение. Постоянно находился на связи с бизнесом и командой разработки.</p>','action')+section('Результат','<p>Проект успешно прошёл несколько стадий MVP и вышел на этап B2C, на котором развивается и масштабируется до сих пор.</p>','result')}
 };
 const $ = selector => root.querySelector(selector);
-let current = 'about', slideIndex = 0, lightboxScrollY = 0, slideZoom = 1, lastWheelAt = -Infinity;
+let current = 'about', slideIndex = 0, lightboxScrollY = 0, slideZoom = 1, lastWheelAt = -Infinity, suppressStageClickUntil = -Infinity, pinchStartDistance = 0, pinchStartZoom = 1, safariGestureStartZoom = 1;
+const slidePointers = new Map();
+let brandPressCount = 0, brandPressTimer = 0, lastBrandPressAt = -Infinity, lastJokeIndex = -1, jokeScrollY = 0, topJokesPromise, jokeTriggerElement;
 const isolatedElements = [];
 const routes = ['about', 'projects', 'experience', ...Object.keys(projects)];
 const pathForRoute = name => `/${name}`;
@@ -57,6 +59,150 @@ const placeholderCaption = {
 $('#ak-project-list').innerHTML = Object.entries(projects).map(([id, p]) => `<article class="ak-project-row" data-route="${id}" role="link" tabindex="0" aria-label="Открыть проект ${p.name}"><div class="ak-project-copy"><h2 class="ak-project-logo ak-project-logo-${id}">${id === 'earm' ? p.name : `<img src="${media['logo-'+id]}" alt="${p.name}">`}</h2><h3>${p.subtitle}</h3><p class="ak-project-summary">${p.summary}</p><p class="ak-project-tags">${p.tags}</p></div><div class="ak-preview"><img src="${media['preview-'+id]}" alt="Превью проекта ${p.name}" loading="lazy" decoding="async"></div></article>`).join('');
 $('#ak-thumbs-prev')?.remove();
 $('#ak-thumbs-next')?.remove();
+
+const brandControl = $('.ak-brand');
+let brandTiltFrame = 0, brandPointerX = 0, brandPointerY = 0;
+const resetBrandTilt = () => {
+  if (!brandControl) return;
+  brandControl.style.setProperty('--ak-logo-rotate-x', '0deg');
+  brandControl.style.setProperty('--ak-logo-rotate-y', '0deg');
+  brandControl.style.setProperty('--ak-logo-shift-x', '0px');
+  brandControl.style.setProperty('--ak-logo-shift-y', '0px');
+  brandControl.style.setProperty('--ak-logo-shadow-x', '0px');
+  brandControl.style.setProperty('--ak-logo-shadow-y', '4px');
+};
+window.addEventListener('pointermove', event => {
+  if (event.pointerType === 'touch') return;
+  brandPointerX = event.clientX;
+  brandPointerY = event.clientY;
+  if (!brandControl || brandTiltFrame) return;
+  brandTiltFrame = requestAnimationFrame(() => {
+    brandTiltFrame = 0;
+    const rect = brandControl.getBoundingClientRect();
+    if (!rect.width || !rect.height || window.getComputedStyle(brandControl).display === 'none') return;
+    const x = Math.max(-1, Math.min(1, (brandPointerX - (rect.left + rect.width / 2)) / Math.max(window.innerWidth * .38, 1)));
+    const y = Math.max(-1, Math.min(1, (brandPointerY - (rect.top + rect.height / 2)) / Math.max(window.innerHeight * .38, 1)));
+    brandControl.style.setProperty('--ak-logo-rotate-x', `${-y * 32}deg`);
+    brandControl.style.setProperty('--ak-logo-rotate-y', `${x * 32}deg`);
+    brandControl.style.setProperty('--ak-logo-shift-x', `${x * 2.8}px`);
+    brandControl.style.setProperty('--ak-logo-shift-y', `${y * 2.8}px`);
+    brandControl.style.setProperty('--ak-logo-shadow-x', `${-x * 10}px`);
+    brandControl.style.setProperty('--ak-logo-shadow-y', `${6 - y * 8}px`);
+  });
+});
+window.addEventListener('pointerout', event => {
+  if (event.relatedTarget) return;
+  resetBrandTilt();
+});
+
+function loadTopJokes() {
+  if (!topJokesPromise) {
+    topJokesPromise = fetch('assets/baneks-top30.json')
+      .then(response => {
+        if (!response.ok) throw new Error(`Top jokes request failed: ${response.status}`);
+        return response.json();
+      })
+      .then(data => Array.isArray(data.jokes) ? data.jokes.filter(joke => joke?.text) : [])
+      .catch(() => []);
+  }
+  return topJokesPromise;
+}
+
+function emitBrandSparks(level) {
+  const brand = $('.ak-brand');
+  if (!brand || window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return;
+  const rect = brand.getBoundingClientRect();
+  const isExplosion = level === 5;
+  const sparkColors = ['#ffad42', '#ff9138', '#ff7436', '#ff593c', '#ff3b45'];
+  const sparkColor = sparkColors[Math.min(level, 5) - 1];
+  const count = isExplosion ? 36 : level * 4;
+  brand.style.setProperty('--ak-brand-glow', `${5 + level * 3}px`);
+  brand.style.setProperty('--ak-brand-heat-color', sparkColor);
+  brand.classList.remove('ak-brand-heating');
+  brand.classList.remove('ak-brand-exploding');
+  void brand.offsetWidth;
+  brand.classList.add(isExplosion ? 'ak-brand-exploding' : 'ak-brand-heating');
+  window.setTimeout(() => brand.classList.remove('ak-brand-heating', 'ak-brand-exploding'), isExplosion ? 620 : 340);
+  if (isExplosion) {
+    const burst = document.createElement('span');
+    burst.className = 'ak-logo-burst';
+    burst.style.left = `${rect.left + rect.width / 2}px`;
+    burst.style.top = `${rect.top + rect.height / 2}px`;
+    document.body.append(burst);
+    window.setTimeout(() => burst.remove(), 760);
+  }
+  for (let index = 0; index < count; index += 1) {
+    const angle = Math.random() * Math.PI * 2;
+    const distance = 12 + level * 6 + Math.random() * (12 + level * (isExplosion ? 11 : 5));
+    const spark = document.createElement('span');
+    spark.className = 'ak-logo-spark';
+    spark.style.left = `${rect.left + rect.width / 2}px`;
+    spark.style.top = `${rect.top + rect.height / 2}px`;
+    spark.style.setProperty('--ak-spark-x', `${Math.cos(angle) * distance}px`);
+    spark.style.setProperty('--ak-spark-y', `${Math.sin(angle) * distance}px`);
+    spark.style.setProperty('--ak-spark-rotate', `${Math.round(Math.random() * 240 - 120)}deg`);
+    spark.style.setProperty('--ak-spark-size', `${2 + Math.random() * 3}px`);
+    spark.style.setProperty('--ak-spark-delay', `${Math.random() * 70}ms`);
+    spark.style.setProperty('--ak-spark-color', sparkColor);
+    document.body.append(spark);
+    window.setTimeout(() => spark.remove(), 850);
+  }
+}
+
+function closeJoke() {
+  const overlay = document.querySelector('.ak-joke-overlay');
+  if (!overlay) return;
+  overlay.remove();
+  root.inert = false;
+  document.body.classList.remove('ak-joke-open');
+  document.body.style.top = '';
+  window.scrollTo(0, jokeScrollY);
+  if (jokeTriggerElement && window.getComputedStyle(jokeTriggerElement).display !== 'none') jokeTriggerElement.focus?.({ preventScroll: true });
+  jokeTriggerElement = null;
+}
+
+async function openRandomJoke() {
+  const jokes = await loadTopJokes();
+  if (!jokes.length || document.querySelector('.ak-joke-overlay')) return;
+  let jokeIndex = Math.floor(Math.random() * jokes.length);
+  if (jokes.length > 1 && jokeIndex === lastJokeIndex) jokeIndex = (jokeIndex + 1) % jokes.length;
+  lastJokeIndex = jokeIndex;
+  const overlay = document.createElement('div');
+  overlay.className = 'ak-joke-overlay';
+  overlay.setAttribute('role', 'presentation');
+  overlay.innerHTML = '<article class="ak-joke-card" role="dialog" aria-modal="true" aria-label="Лучшие анекдоты категории B, baneks.ru" tabindex="-1"><p class="ak-joke-source">Лучшие анекдоты категории B / baneks.ru</p><p class="ak-joke-text"></p></article>';
+  overlay.querySelector('.ak-joke-text').textContent = jokes[jokeIndex].text;
+  jokeScrollY = window.scrollY;
+  document.body.style.top = `-${jokeScrollY}px`;
+  document.body.classList.add('ak-joke-open');
+  root.inert = true;
+  document.body.append(overlay);
+  const closeAvailableAt = performance.now() + 1500;
+  overlay.addEventListener('click', () => {
+    if (performance.now() < closeAvailableAt) return;
+    closeJoke();
+  });
+  overlay.querySelector('.ak-joke-card').focus({ preventScroll: true });
+}
+
+function registerBrandPress({ animate = true, trigger = $('.ak-brand') } = {}) {
+  const now = performance.now();
+  brandPressCount = now - lastBrandPressAt <= 1600 ? brandPressCount + 1 : 1;
+  lastBrandPressAt = now;
+  jokeTriggerElement = trigger;
+  window.clearTimeout(brandPressTimer);
+  if (animate) emitBrandSparks(brandPressCount);
+  if (brandPressCount >= 5) {
+    brandPressCount = 0;
+    lastBrandPressAt = -Infinity;
+    void openRandomJoke();
+    return;
+  }
+  brandPressTimer = window.setTimeout(() => {
+    brandPressCount = 0;
+    lastBrandPressAt = -Infinity;
+  }, 1600);
+}
 
 function resetSlideZoom() {
   slideZoom = 1;
@@ -125,7 +271,7 @@ function route(name, remember = true, focusHeading = true) {
   setExpanded(false);
   current = name;
   if (remember && location.pathname !== pathForRoute(name)) history.pushState(null, '', pathForRoute(name));
-  document.title = (projects[name] ? projects[name].name : name === 'projects' ? 'Проекты' : name === 'experience' ? 'Опыт' : 'Обо мне') + ' - Алексей Корепанов';
+  document.title = (projects[name] ? projects[name].name : name === 'projects' ? 'Проекты' : name === 'experience' ? 'Опыт' : 'Обо мне') + ' — Корепанов Алексей';
   $('#ak-about').hidden = name !== 'about';
   $('#ak-projects').hidden = name !== 'projects';
   $('#ak-experience').hidden = name !== 'experience';
@@ -159,9 +305,24 @@ function route(name, remember = true, focusHeading = true) {
 root.addEventListener('click', event => {
   const target = event.target instanceof Element ? event.target : null;
   if (!target) return;
+  const portrait = target.closest('.ak-photo img');
+  const brand = $('.ak-brand');
+  if (portrait && brand && window.getComputedStyle(brand).display === 'none') {
+    registerBrandPress({ animate: false, trigger: portrait });
+    return;
+  }
   const routeTarget = target.closest('[data-route]');
-  if (routeTarget && root.contains(routeTarget)) { route(routeTarget.dataset.route); return; }
-  if (target.closest('#ak-stage')) { setExpanded(!$('#ak-stage').classList.contains('ak-expanded')); return; }
+  if (routeTarget && root.contains(routeTarget)) {
+    const isBrand = routeTarget.classList.contains('ak-brand');
+    if (isBrand) registerBrandPress();
+    route(routeTarget.dataset.route, true, !isBrand || event.detail === 0);
+    return;
+  }
+  if (target.closest('#ak-stage')) {
+    if (performance.now() < suppressStageClickUntil) return;
+    setExpanded(!$('#ak-stage').classList.contains('ak-expanded'));
+    return;
+  }
   const button = target.closest('button');
   if (button && root.contains(button) && button.dataset.index !== undefined) showSlide(Number(button.dataset.index));
 });
@@ -182,13 +343,81 @@ root.addEventListener('keydown', event => {
   if (event.key === 'ArrowRight') { event.preventDefault(); showSlide(slideIndex + 1, 1); }
   if (event.key === 'ArrowLeft') { event.preventDefault(); showSlide(slideIndex - 1, -1); }
 });
+const galleryStage = $('#ak-stage');
+galleryStage.addEventListener('pointerdown', event => {
+  if (event.pointerType === 'mouse' || !galleryStage.classList.contains('ak-expanded')) return;
+  slidePointers.set(event.pointerId, { startX: event.clientX, startY: event.clientY, x: event.clientX, y: event.clientY });
+  galleryStage.setPointerCapture?.(event.pointerId);
+  if (slidePointers.size === 2) {
+    const [first, second] = [...slidePointers.values()];
+    pinchStartDistance = Math.hypot(second.x - first.x, second.y - first.y);
+    pinchStartZoom = slideZoom;
+  }
+});
+galleryStage.addEventListener('pointermove', event => {
+  const pointer = slidePointers.get(event.pointerId);
+  if (!pointer) return;
+  pointer.x = event.clientX;
+  pointer.y = event.clientY;
+  if (slidePointers.size >= 2) {
+    const [first, second] = [...slidePointers.values()];
+    const distance = Math.hypot(second.x - first.x, second.y - first.y);
+    if (pinchStartDistance > 0) {
+      slideZoom = Math.min(4, Math.max(1, pinchStartZoom * distance / pinchStartDistance));
+      const rect = galleryStage.getBoundingClientRect();
+      const image = $('#ak-slide');
+      image.style.setProperty('--ak-slide-zoom', String(slideZoom));
+      image.style.setProperty('--ak-slide-origin-x', `${Math.max(0, Math.min(100, ((first.x + second.x) / 2 - rect.left) / rect.width * 100))}%`);
+      image.style.setProperty('--ak-slide-origin-y', `${Math.max(0, Math.min(100, ((first.y + second.y) / 2 - rect.top) / rect.height * 100))}%`);
+    }
+    event.preventDefault();
+    return;
+  }
+  const dx = pointer.x - pointer.startX;
+  const dy = pointer.y - pointer.startY;
+  if (Math.abs(dx) > 10 && Math.abs(dx) > Math.abs(dy)) event.preventDefault();
+}, { passive: false });
+galleryStage.addEventListener('pointerup', event => {
+  const pointer = slidePointers.get(event.pointerId);
+  if (!pointer) return;
+  const wasPinching = slidePointers.size > 1;
+  slidePointers.delete(event.pointerId);
+  if (wasPinching) {
+    suppressStageClickUntil = performance.now() + 450;
+    for (const remaining of slidePointers.values()) {
+      remaining.startX = remaining.x;
+      remaining.startY = remaining.y;
+    }
+    return;
+  }
+  const dx = event.clientX - pointer.startX;
+  const dy = event.clientY - pointer.startY;
+  if (Math.abs(dx) < 36 || Math.abs(dx) <= Math.abs(dy) * 1.15) return;
+  const direction = dx < 0 ? 1 : -1;
+  suppressStageClickUntil = performance.now() + 450;
+  showSlide(slideIndex + direction, direction);
+});
+galleryStage.addEventListener('pointercancel', event => { slidePointers.delete(event.pointerId); });
+galleryStage.addEventListener('gesturestart', event => {
+  if (!galleryStage.classList.contains('ak-expanded')) return;
+  event.preventDefault();
+  safariGestureStartZoom = slideZoom;
+}, { passive: false });
+galleryStage.addEventListener('gesturechange', event => {
+  if (!galleryStage.classList.contains('ak-expanded')) return;
+  event.preventDefault();
+  slideZoom = Math.min(4, Math.max(1, safariGestureStartZoom * (event.scale || 1)));
+  $('#ak-slide').style.setProperty('--ak-slide-zoom', String(slideZoom));
+}, { passive: false });
 $('#ak-stage').addEventListener('wheel', event => {
   const stage = $('#ak-stage');
   if (!projects[current]) return;
-  const delta = Math.abs(event.deltaY) >= Math.abs(event.deltaX) ? event.deltaY : event.deltaX;
+  const expanded = stage.classList.contains('ak-expanded');
+  if (!expanded) return;
+  const delta = expanded && Math.abs(event.deltaY) >= Math.abs(event.deltaX) ? event.deltaY : event.deltaX;
   if (Math.abs(delta) < 4) return;
   if (event.ctrlKey) {
-    if (!stage.classList.contains('ak-expanded')) return;
+    if (!expanded) return;
     event.preventDefault();
     const rect = stage.getBoundingClientRect();
     slideZoom = Math.min(4, Math.max(1, slideZoom + (delta < 0 ? .25 : -.25)));
@@ -210,5 +439,11 @@ function routeFromLocation() {
   if (name !== current) route(name, false);
 }
 window.addEventListener('popstate', routeFromLocation);
+document.addEventListener('keydown', event => {
+  if (event.key === 'Escape' && document.querySelector('.ak-joke-overlay')) {
+    event.preventDefault();
+    closeJoke();
+  }
+});
 route(location.pathname.split('/').filter(Boolean)[0] || 'about', false, false);
 })();

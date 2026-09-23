@@ -19,6 +19,10 @@ for (const [project, numbers] of Object.entries(galleryFiles)) {
   }
 }
 const routePages = ['about', 'projects', 'experience', 'epps', 'grad', 'earm'].map(route => `${route}/index.html`);
+assert.match(html, /<meta name="author" content="Корепанов Алексей">/);
+assert.match(html, /<script type="application\/ld\+json">/);
+assert.match(html, /"alternateName": \["Корепанов Алексей"/);
+assert.doesNotMatch(html, /display\s*:\s*none[^<]*(?:продуктовый дизайнер|Корепанов Алексей)/i);
 for (const filename of ['index.html', '404.html', ...routePages]) {
   const dom = new JSDOM(await readFile(path.join(root, filename), 'utf8'));
   const doc = dom.window.document;

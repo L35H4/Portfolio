@@ -16,7 +16,7 @@ const routes = {
 for (const [route, title] of Object.entries(routes)) {
   const url = `https://www.korepanov.art/${route}`;
   const html = source
-    .replace(/<title>[^<]*<\/title>/, `<title>${title} - Алексей Корепанов</title>`)
+    .replace(/<title>[^<]*<\/title>/, `<title>${title} — Корепанов Алексей</title>`)
     .replace(/<link rel="canonical" href="[^"]*">/, `<link rel="canonical" href="${url}">`)
     .replace(/<meta property="og:url" content="[^"]*">/, `<meta property="og:url" content="${url}">`);
   const directory = path.join(root, route);
