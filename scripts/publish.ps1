@@ -4,9 +4,10 @@ $ErrorActionPreference = 'Stop'
 $site = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
 $git = Resolve-PortfolioTool 'git' 'native\git\cmd\git.exe'
 $node = Resolve-PortfolioTool 'node' 'node\bin\node.exe'
-# The optional Codex-bundled Git keeps its network helpers beside cmd/.
-$helpers = Join-Path (Split-Path (Split-Path $git -Parent) -Parent) 'mingw64\bin'
-if (Test-Path -LiteralPath $helpers) { $env:GIT_EXEC_PATH = $helpers }
+# Git for Windows keeps remote helpers in libexec/git-core. Override the path
+# only when that complete helper directory is present.
+$helpers = Join-Path (Split-Path (Split-Path $git -Parent) -Parent) 'mingw64\libexec\git-core'
+if (Test-Path -LiteralPath (Join-Path $helpers 'git-remote-https.exe')) { $env:GIT_EXEC_PATH = $helpers }
 function Run-Git {
     & $git -C $site @args
     if ($LASTEXITCODE -ne 0) { throw 'Команда Git завершилась ошибкой. Изменения не перезаписывались.' }
