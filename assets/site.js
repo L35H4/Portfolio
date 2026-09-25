@@ -1,13 +1,15 @@
 
 (()=>{
 const root=document.getElementById('ak-portfolio-v2');
-const media={"preview-epps":"assets/gallery/epps/preview.webp","preview-grad":"assets/gallery/grad/preview.webp","preview-earm":"assets/gallery/earm/preview.webp","logo-epps":"assets/EPPS_logo.svg","logo-grad":"assets/GRAD_logo.svg","logo-earm":"assets/ЕАРМ_logo.svg"};
-const galleryFiles={"epps":[2,3,6,8,9,12,13,14,15,16,17],"grad":[2,4,7,8,10,23,24,25,26,27,29],"earm":[1,2,3,6,7,13,15,17,19]};
-const galleryImage=(project,number)=>`assets/gallery/${project}/${project}-${String(number).padStart(2,'0')}.webp`;
-const galleryThumb=(project,number)=>`assets/gallery/${project}/thumbs/${project}-${String(number).padStart(2,'0')}.webp`;
+const media={"preview-epps":"assets/gallery/epps/preview.webp","preview-grad":"assets/gallery/grad/preview.webp","preview-earm":"assets/gallery/earm/preview.webp","preview-pinpointer":"assets/gallery/pinpointer/preview.png","logo-epps":"assets/EPPS_logo.svg","logo-grad":"assets/GRAD_logo.svg","logo-earm":"assets/ЕАРМ_logo.svg"};
+const galleryFiles={"epps":[2,3,6,8,9,12,13,14,15,16,17],"grad":[2,4,7,8,10,23,24,25,26,27,29],"earm":[1,2,3,6,7,13,15,17,19],"pinpointer":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17]};
+const galleryExtension=project=>project==='pinpointer'?'png':'webp';
+const galleryThumbExtension=project=>project==='pinpointer'?'jpg':'webp';
+const galleryImage=(project,number)=>`assets/gallery/${project}/${project}-${String(number).padStart(2,'0')}.${galleryExtension(project)}`;
+const galleryThumb=(project,number)=>`assets/gallery/${project}/thumbs/${project}-${String(number).padStart(2,'0')}.${galleryThumbExtension(project)}`;
 const section=(h,p)=>`<section class="ak-section"><h2>${h}</h2><div class="ak-copy">${p}</div></section>`;
 const projects={
-epps:{name:'ЕППС',subtitle:'Платформа мониторинга и планирования',summary:'Полная пересборка интерфейса и перезапуск проекта под расширенные требования бизнеса.',tags:'Нефтегазовая отрасль / B2B / B2C',meta:['Продуктовый дизайнер','1,5 года + поддержка','1 дизайнер'],next:'grad',slides:[
+epps:{name:'ЕППС',subtitle:'Платформа мониторинга и планирования',summary:'Полная пересборка интерфейса и перезапуск проекта под расширенные требования бизнеса.',tags:'Нефтегазовая отрасль / B2B / B2C / SaaS',meta:['Продуктовый дизайнер','1,5 года + поддержка','1 дизайнер'],next:'grad',slides:[
 [2,'Статистика и сравнение показателей',''],
 [3,'Планирование и контроль показателей',''],
 [6,'Планирование этапов',''],
@@ -20,7 +22,7 @@ epps:{name:'ЕППС',subtitle:'Платформа мониторинга и п�
 [16,'Планирование бизнес-кейса',''],
 [17,'Светлая тема: планирование бизнес-кейса','']],
 body:section('Задача','<p>Интерфейс не выдерживал роста функциональной нагрузки. Принятые решения мешали ходу разработки. Было необходимо полностью переработать интерфейс под новые бизнес-требования в условиях высокой неопределённости.</p>','task')+section('Что изменил','<p>Придумал айдентику проекта. Сформировал и задокументировал масштабируемые правила проектирования UI. Перевёл всё на дизайн-систему Consta и адаптировал её под нужды проекта. Постоянно находился на связи с бизнесом и командой разработки.</p>','action')+section('Результат','<p>Проект успешно прошёл несколько стадий MVP и вышел на этап B2C, на котором развивается и масштабируется до сих пор.</p>','result')},
-grad:{name:'ГРАД',subtitle:'Платформа мониторинга и анализа',summary:'Интеграция и создание новых геолого-геофизических инструментов в рамках существующего проекта.',tags:'Нефтегазовая отрасль / B2B / B2C',meta:['Продуктовый дизайнер','2 года','6 дизайнеров'],next:'earm',slides:[
+grad:{name:'ГРАД',subtitle:'Платформа мониторинга и анализа',summary:'Интеграция и создание новых геолого-геофизических инструментов в рамках существующего проекта.',tags:'Нефтегазовая отрасль / B2B / B2C / SaaS',meta:['Продуктовый дизайнер','2 года','6 дизайнеров'],next:'earm',slides:[
 [2,'Настройка рабочего процесса',''],
 [4,'Геофизический планшет','Один из модулей, дизайн которых я создал с нуля. В рабочей области представлены кривые, шкалы глубины, литология, пласты и интервалы перфорации.'],
 [7,'Сравнение скважин',''],
@@ -33,7 +35,7 @@ grad:{name:'ГРАД',subtitle:'Платформа мониторинга и а�
 [27,'Динамика показателей',''],
 [29,'Масштаб платформы','Крупные модули велись отдельно из-за объёма макетов. Это структура общего продукта, а не перечень модулей, созданных мной единолично.']],
 body:section('Задача','<p>Было необходимо интегрироваться в существующую команду дизайнеров для долгосрочной совместной работы. Требовалось создание новых модулей и инструментов в рамках существующей системы с высокой информационной и функциональной нагрузкой.</p>','task')+section('Что сделал','<p>Успешно спроектировал несколько больших отдельных модулей в рамках существующей системы. Дополнил дизайн-систему под общие правила, задокументировал правила и поведение. Вёл работу и принимал решения по всей системе в рамках отдельных задач. Постоянно находился на связи с бизнесом и командой разработки.</p>','action')+section('Результат','<p>Проект успешно прошёл несколько стадий MVP и вышел на этап B2C, на котором развивается и масштабируется до сих пор.</p>','result')},
-earm:{name:'ЕАРМ',subtitle:'Платформа мониторинга и подготовки отчетности',summary:'Интеграция и создание новых модулей мониторинга в рамках существующего проекта.',tags:'Нефтегазовая отрасль / B2B',meta:['Продуктовый дизайнер','1,5 года','1 дизайнер'],next:'epps',slides:[
+earm:{name:'ЕАРМ',subtitle:'Платформа мониторинга и подготовки отчетности',summary:'Интеграция и создание новых модулей мониторинга в рамках существующего проекта.',tags:'Нефтегазовая отрасль / B2B / SaaS',meta:['Продуктовый дизайнер','1,5 года','1 дизайнер'],next:'pinpointer',slides:[
 [1,'Экспертиза скважины','Несколько технических показателей на временной шкале и боковая панель с параметрами.'],
 [2,'Таблица показателей',''],
 [3,'Часто ремонтируемый фонд','Пользователь анализирует показатели и таблицу скважин, задаёт период и фильтры.'],
@@ -43,7 +45,26 @@ earm:{name:'ЕАРМ',subtitle:'Платформа мониторинга и п�
 [15,'Сводный аналитический дашборд',''],
 [17,'Сравнение плановых и фактических показателей',''],
 [19,'Интерактивный прототип','По обязательному требованию заказчика весь дизайн поддерживался как большой кликабельный прототип.']],
-body:section('Задача','<p>Было необходимо создать новые модули и инструменты в рамках существующей системы с высокой информационной и функциональной нагрузкой в условиях высокой неопределённости.</p>','task')+section('Что сделал','<p>Успешно спроектировал ряд отдельных модулей мониторинга в рамках существующей системы. Дополнил дизайн-систему общими правилами, задокументировал их и описал поведение. Постоянно находился на связи с бизнесом и командой разработки.</p>','action')+section('Результат','<p>Проект успешно прошёл несколько стадий MVP и вышел на этап B2C, на котором развивается и масштабируется до сих пор.</p>','result')}
+body:section('Задача','<p>Было необходимо создать новые модули и инструменты в рамках существующей системы с высокой информационной и функциональной нагрузкой в условиях высокой неопределённости.</p>','task')+section('Что сделал','<p>Успешно спроектировал ряд отдельных модулей мониторинга в рамках существующей системы. Дополнил дизайн-систему общими правилами, задокументировал их и описал поведение. Постоянно находился на связи с бизнесом и командой разработки.</p>','action')+section('Результат','<p>Проект успешно прошёл несколько стадий MVP и вышел на этап B2C, на котором развивается и масштабируется до сих пор.</p>','result')},
+pinpointer:{name:'Pinpointer',subtitle:'Платформа управления грузоперевозками',summary:'Разработка нового продукта для шведского рынка.',tags:'Грузоперевозки / B2B / B2C / SaaS',meta:['Продуктовый дизайнер','1,5 года + поддержка','1 дизайнер'],next:'epps',slides:[
+[1,'Lorem ipsum','Lorem ipsum dolor sit amet, consectetur adipiscing elit.'],
+[2,'Lorem ipsum','Lorem ipsum dolor sit amet, consectetur adipiscing elit.'],
+[3,'Lorem ipsum','Lorem ipsum dolor sit amet, consectetur adipiscing elit.'],
+[4,'Lorem ipsum','Lorem ipsum dolor sit amet, consectetur adipiscing elit.'],
+[5,'Lorem ipsum','Lorem ipsum dolor sit amet, consectetur adipiscing elit.'],
+[6,'Lorem ipsum','Lorem ipsum dolor sit amet, consectetur adipiscing elit.'],
+[7,'Lorem ipsum','Lorem ipsum dolor sit amet, consectetur adipiscing elit.'],
+[8,'Lorem ipsum','Lorem ipsum dolor sit amet, consectetur adipiscing elit.'],
+[9,'Lorem ipsum','Lorem ipsum dolor sit amet, consectetur adipiscing elit.'],
+[10,'Lorem ipsum','Lorem ipsum dolor sit amet, consectetur adipiscing elit.'],
+[11,'Lorem ipsum','Lorem ipsum dolor sit amet, consectetur adipiscing elit.'],
+[12,'Lorem ipsum','Lorem ipsum dolor sit amet, consectetur adipiscing elit.'],
+[13,'Lorem ipsum','Lorem ipsum dolor sit amet, consectetur adipiscing elit.'],
+[14,'Lorem ipsum','Lorem ipsum dolor sit amet, consectetur adipiscing elit.'],
+[15,'Lorem ipsum','Lorem ipsum dolor sit amet, consectetur adipiscing elit.'],
+[16,'Lorem ipsum','Lorem ipsum dolor sit amet, consectetur adipiscing elit.'],
+[17,'Lorem ipsum','Lorem ipsum dolor sit amet, consectetur adipiscing elit.']],
+body:section('Задача','<p>Интерфейс не выдерживал роста функциональной нагрузки. Принятые решения мешали ходу разработки. Было необходимо полностью переработать интерфейс под новые бизнес-требования в условиях высокой неопределённости.</p>','task')+section('Что сделал','<p>Придумал айдентику проекта. Сформировал и задокументировал масштабируемые правила проектирования UI. Создал дизайн систему под нужды проекта. Постоянно находился на связи с бизнесом и командой разработки.</p>','action')+section('Результат','<p>Проект успешно прошёл несколько стадий MVP и вышел на этап B2C, на котором развивается и масштабируется до сих пор.</p><p><a href="https://pinpointer.se/" target="_blank" rel="noreferrer">https://pinpointer.se/</a></p>','result')}
 };
 const $ = selector => root.querySelector(selector);
 let current = 'about', slideIndex = 0, lightboxScrollY = 0, slideZoom = 1, lastWheelAt = -Infinity, suppressStageClickUntil = -Infinity, pinchStartDistance = 0, pinchStartZoom = 1, safariGestureStartZoom = 1;
@@ -56,44 +77,9 @@ const placeholderCaption = {
   title: 'Заголовок',
   copy: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
 };
-$('#ak-project-list').innerHTML = Object.entries(projects).map(([id, p]) => `<article class="ak-project-row" data-route="${id}" role="link" tabindex="0" aria-label="Открыть проект ${p.name}"><div class="ak-project-copy"><h2 class="ak-project-logo ak-project-logo-${id}">${id === 'earm' ? p.name : `<img src="${media['logo-'+id]}" alt="${p.name}">`}</h2><h3>${p.subtitle}</h3><p class="ak-project-summary">${p.summary}</p><p class="ak-project-tags">${p.tags}</p></div><div class="ak-preview"><img src="${media['preview-'+id]}" alt="Превью проекта ${p.name}" loading="lazy" decoding="async"></div></article>`).join('');
+$('#ak-project-list').innerHTML = Object.entries(projects).map(([id, p]) => `<article class="ak-project-row" data-route="${id}" role="link" tabindex="0" aria-label="Открыть проект ${p.name}"><div class="ak-project-copy"><h2 class="ak-project-logo ak-project-logo-${id}">${['earm','pinpointer'].includes(id) ? p.name : `<img src="${media['logo-'+id]}" alt="${p.name}">`}</h2><h3>${p.subtitle}</h3><p class="ak-project-summary">${p.summary}</p><p class="ak-project-tags">${p.tags}</p></div><div class="ak-preview"><img src="${media['preview-'+id]}" alt="Превью проекта ${p.name}" loading="lazy" decoding="async"></div></article>`).join('');
 $('#ak-thumbs-prev')?.remove();
 $('#ak-thumbs-next')?.remove();
-
-const brandControl = $('.ak-brand');
-let brandTiltFrame = 0, brandPointerX = 0, brandPointerY = 0;
-const resetBrandTilt = () => {
-  if (!brandControl) return;
-  brandControl.style.setProperty('--ak-logo-rotate-x', '0deg');
-  brandControl.style.setProperty('--ak-logo-rotate-y', '0deg');
-  brandControl.style.setProperty('--ak-logo-shift-x', '0px');
-  brandControl.style.setProperty('--ak-logo-shift-y', '0px');
-  brandControl.style.setProperty('--ak-logo-shadow-x', '0px');
-  brandControl.style.setProperty('--ak-logo-shadow-y', '4px');
-};
-window.addEventListener('pointermove', event => {
-  if (event.pointerType === 'touch') return;
-  brandPointerX = event.clientX;
-  brandPointerY = event.clientY;
-  if (!brandControl || brandTiltFrame) return;
-  brandTiltFrame = requestAnimationFrame(() => {
-    brandTiltFrame = 0;
-    const rect = brandControl.getBoundingClientRect();
-    if (!rect.width || !rect.height || window.getComputedStyle(brandControl).display === 'none') return;
-    const x = Math.max(-1, Math.min(1, (brandPointerX - (rect.left + rect.width / 2)) / Math.max(window.innerWidth * .38, 1)));
-    const y = Math.max(-1, Math.min(1, (brandPointerY - (rect.top + rect.height / 2)) / Math.max(window.innerHeight * .38, 1)));
-    brandControl.style.setProperty('--ak-logo-rotate-x', `${-y * 24}deg`);
-    brandControl.style.setProperty('--ak-logo-rotate-y', `${x * 24}deg`);
-    brandControl.style.setProperty('--ak-logo-shift-x', `${x * 2.8}px`);
-    brandControl.style.setProperty('--ak-logo-shift-y', `${y * 2.8}px`);
-    brandControl.style.setProperty('--ak-logo-shadow-x', `${-x * 10}px`);
-    brandControl.style.setProperty('--ak-logo-shadow-y', `${6 - y * 8}px`);
-  });
-});
-window.addEventListener('pointerout', event => {
-  if (event.relatedTarget) return;
-  resetBrandTilt();
-});
 
 function loadTopJokes() {
   if (!topJokesPromise) {
@@ -108,21 +94,12 @@ function loadTopJokes() {
   return topJokesPromise;
 }
 
-function emitBrandSparks(level) {
-  const brand = $('.ak-brand');
-  if (!brand || window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return;
-  const rect = brand.getBoundingClientRect();
+function emitClickSparks(level, source = $('.ak-brand')) {
+  if (!source || window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return;
+  const rect = source.getBoundingClientRect();
   const isExplosion = level === 5;
-  const sparkColors = ['#ffad42', '#ff9138', '#ff7436', '#ff593c', '#ff3b45'];
-  const sparkColor = sparkColors[Math.min(level, 5) - 1];
+  const sparkColor = 'var(--ak-color-accent)';
   const count = isExplosion ? 36 : level * 4;
-  brand.style.setProperty('--ak-brand-glow', `${5 + level * 3}px`);
-  brand.style.setProperty('--ak-brand-heat-color', sparkColor);
-  brand.classList.remove('ak-brand-heating');
-  brand.classList.remove('ak-brand-exploding');
-  void brand.offsetWidth;
-  brand.classList.add(isExplosion ? 'ak-brand-exploding' : 'ak-brand-heating');
-  window.setTimeout(() => brand.classList.remove('ak-brand-heating', 'ak-brand-exploding'), isExplosion ? 620 : 340);
   if (isExplosion) {
     const burst = document.createElement('span');
     burst.className = 'ak-logo-burst';
@@ -177,7 +154,7 @@ async function openRandomJoke() {
   document.body.classList.add('ak-joke-open');
   root.inert = true;
   document.body.append(overlay);
-  const closeAvailableAt = performance.now() + 1500;
+  const closeAvailableAt = performance.now() + 1000;
   overlay.addEventListener('click', () => {
     if (performance.now() < closeAvailableAt) return;
     closeJoke();
@@ -191,7 +168,7 @@ function registerBrandPress({ animate = true, trigger = $('.ak-brand') } = {}) {
   lastBrandPressAt = now;
   jokeTriggerElement = trigger;
   window.clearTimeout(brandPressTimer);
-  if (animate) emitBrandSparks(brandPressCount);
+  if (animate) emitClickSparks(brandPressCount, trigger);
   if (brandPressCount >= 5) {
     brandPressCount = 0;
     lastBrandPressAt = -Infinity;
@@ -212,7 +189,7 @@ function resetSlideZoom() {
   image.style.setProperty('--ak-slide-origin-y', '50%');
 }
 
-let slideRequest = 0, wheelTotal = 0, wheelConsumed = false;
+let slideRequest = 0, wheelTotal = 0, wheelConsumed = false, routeAnimationTimer = 0;
 function showSlide(index, direction = 0) {
   const project = projects[current];
   resetSlideZoom();
@@ -278,6 +255,15 @@ function setExpanded(on) {
   stage.focus({ preventScroll: true });
 }
 
+function animateRouteView(view) {
+  clearTimeout(routeAnimationTimer);
+  root.querySelectorAll('.ak-route-enter').forEach(element => element.classList.remove('ak-route-enter'));
+  if (!view || window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return;
+  void view.offsetWidth;
+  view.classList.add('ak-route-enter');
+  routeAnimationTimer = window.setTimeout(() => view.classList.remove('ak-route-enter'), 560);
+}
+
 function route(name, remember = true, focusHeading = true) {
   if (!routes.includes(name)) {
     name = 'about';
@@ -307,6 +293,7 @@ function route(name, remember = true, focusHeading = true) {
     $('#ak-thumbs').innerHTML = project.slides.map((slide, i) => `<button class="ak-thumb" data-index="${i}" aria-label="Слайд ${i+1}: ${slide[1]}" aria-pressed="false"><img src="${galleryThumb(current,slide[0])}" alt="" loading="lazy" decoding="async"></button>`).join('');
     showSlide(0);
   }
+  animateRouteView(projects[name] ? $('#ak-case') : $(`#ak-${name}`));
   requestAnimationFrame(() => {
     root.scrollIntoView({ block: 'start', behavior: 'instant' });
     if (focusHeading) {
@@ -323,7 +310,7 @@ root.addEventListener('click', event => {
   const portrait = target.closest('.ak-photo img');
   const brand = $('.ak-brand');
   if (portrait && brand && window.getComputedStyle(brand).display === 'none') {
-    registerBrandPress({ animate: false, trigger: portrait });
+    registerBrandPress({ trigger: portrait });
     return;
   }
   const routeTarget = target.closest('[data-route]');

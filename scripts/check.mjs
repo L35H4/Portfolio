@@ -13,12 +13,14 @@ const references = new Set(Object.values(media));
 const galleryFiles = JSON.parse(js.match(/const galleryFiles=(\{[^\n]*\});/)[1]);
 for (const [project, numbers] of Object.entries(galleryFiles)) {
   for (const number of numbers) {
-    const filename = `${project}-${String(number).padStart(2, '0')}.webp`;
+    const extension = project === 'pinpointer' ? 'png' : 'webp';
+    const filename = `${project}-${String(number).padStart(2, '0')}.${extension}`;
+    const thumbnail = `${project}-${String(number).padStart(2, '0')}.${project === 'pinpointer' ? 'jpg' : 'webp'}`;
     references.add(`assets/gallery/${project}/${filename}`);
-    references.add(`assets/gallery/${project}/thumbs/${filename}`);
+    references.add(`assets/gallery/${project}/thumbs/${thumbnail}`);
   }
 }
-const routePages = ['about', 'projects', 'experience', 'epps', 'grad', 'earm'].map(route => `${route}/index.html`);
+const routePages = ['about', 'projects', 'experience', 'epps', 'grad', 'earm', 'pinpointer'].map(route => `${route}/index.html`);
 assert.match(html, /<meta name="author" content="Корепанов Алексей">/);
 assert.match(html, /<script type="application\/ld\+json">/);
 assert.match(html, /"alternateName": \["Корепанов Алексей"/);
@@ -34,17 +36,17 @@ for (const filename of ['index.html', '404.html', ...routePages]) {
     const url = element.getAttribute('src') ?? element.getAttribute('href');
     if (url && !/^(https?:|mailto:|tel:|#)/.test(url)) {
       const relative = url.replace(/^\//, '').split(/[?#]/)[0] || 'index.html';
-      references.add(['about', 'projects', 'experience', 'epps', 'grad', 'earm'].includes(relative) ? `${relative}/index.html` : relative);
+      references.add(['about', 'projects', 'experience', 'epps', 'grad', 'earm', 'pinpointer'].includes(relative) ? `${relative}/index.html` : relative);
     }
   }
   for (const image of doc.querySelectorAll('img')) assert.ok(image.hasAttribute('alt'), `Missing image alt: ${filename}`);
   dom.window.close();
 }
-for (const route of ['about', 'projects', 'experience', 'epps', 'grad', 'earm']) {
+for (const route of ['about', 'projects', 'experience', 'epps', 'grad', 'earm', 'pinpointer']) {
   const routeHtml = await readFile(path.join(root, route, 'index.html'), 'utf8');
   assert.match(routeHtml, new RegExp(`<link rel="canonical" href="https://www\\.korepanov\\.art/${route}">`));
   assert.match(routeHtml, /<base href="\/">/);
-  assert.doesNotMatch(routeHtml, /\/#(?:about|projects|experience|epps|grad|earm)/);
+  assert.doesNotMatch(routeHtml, /\/#(?:about|projects|experience|epps|grad|earm|pinpointer)/);
 }
 for (const [, url] of css.matchAll(/url\(['"]?([^)'"\s]+)['"]?\)/g)) {
   if (!/^(https?:|data:)/.test(url)) references.add(path.posix.normalize('assets/' + url));

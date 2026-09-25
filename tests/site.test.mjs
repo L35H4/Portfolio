@@ -22,13 +22,13 @@ const key = (window, target, value) => {
   return event;
 };
 
-for (const route of ['about', 'projects', 'experience', 'epps', 'grad', 'earm']) {
+for (const route of ['about', 'projects', 'experience', 'epps', 'grad', 'earm', 'pinpointer']) {
   test(`direct route /${route} renders one screen`, t => {
     const dom = loadSite(route); t.after(() => dom.window.close());
     const doc = dom.window.document;
     const screens = ['ak-about', 'ak-projects', 'ak-experience', 'ak-case'].filter(id => !doc.getElementById(id).hidden);
     assert.deepEqual(screens, [route === 'about' || route === 'projects' || route === 'experience' ? `ak-${route}` : 'ak-case']);
-    if (['epps', 'grad', 'earm'].includes(route)) assert.ok(doc.querySelector('#ak-thumbs button[aria-pressed="true"]'));
+    if (['epps', 'grad', 'earm', 'pinpointer'].includes(route)) assert.ok(doc.querySelector('#ak-thumbs button[aria-pressed="true"]'));
   });
 }
 test('an unknown path recovers to a consistent home route', t => {
@@ -185,19 +185,19 @@ test('five consecutive logo presses open one random joke and any click closes it
   assert.equal(overlay.querySelector('.ak-joke-hint'), null);
   assert.ok(doc.querySelector('.ak-logo-burst'));
   const sparks = [...doc.querySelectorAll('.ak-logo-spark')];
-  assert.equal(sparks[0].style.getPropertyValue('--ak-spark-color'), '#ffad42');
-  assert.equal(sparks.at(-1).style.getPropertyValue('--ak-spark-color'), '#ff3b45');
+  assert.equal(sparks[0].style.getPropertyValue('--ak-spark-color'), 'var(--ak-color-accent)');
+  assert.equal(sparks.at(-1).style.getPropertyValue('--ak-spark-color'), 'var(--ak-color-accent)');
   assert.equal(doc.getElementById('ak-portfolio-v2').inert, true);
   assert.ok(topJokes.jokes.some(joke => joke.text === overlay.querySelector('.ak-joke-text').textContent));
   overlay.querySelector('.ak-joke-card').click();
   assert.ok(doc.querySelector('.ak-joke-overlay'));
-  await new Promise(resolve => window.setTimeout(resolve, 1520));
+  await new Promise(resolve => window.setTimeout(resolve, 1020));
   overlay.querySelector('.ak-joke-card').click();
   assert.equal(doc.querySelector('.ak-joke-overlay'), null);
   assert.equal(Boolean(doc.getElementById('ak-portfolio-v2').inert), false);
 });
 
-test('five portrait taps open the joke without logo animation when the logo is hidden', async t => {
+test('five portrait taps use the accent effect and open the joke when the logo is hidden', async t => {
   const dom = loadSite('about'); t.after(() => dom.window.close());
   const { window } = dom; const doc = window.document;
   const brand = doc.querySelector('.ak-brand'); const portrait = doc.querySelector('.ak-photo img');
@@ -205,7 +205,8 @@ test('five portrait taps open the joke without logo animation when the logo is h
   for (let press = 0; press < 5; press += 1) portrait.click();
   await new Promise(resolve => window.setTimeout(resolve, 0));
   assert.ok(doc.querySelector('.ak-joke-overlay'));
-  assert.equal(doc.querySelectorAll('.ak-logo-spark').length, 0);
-  assert.equal(brand.classList.contains('ak-brand-heating'), false);
-  assert.equal(brand.classList.contains('ak-brand-exploding'), false);
+  const sparks = [...doc.querySelectorAll('.ak-logo-spark')];
+  assert.ok(sparks.length > 0);
+  assert.equal(sparks[0].style.getPropertyValue('--ak-spark-color'), 'var(--ak-color-accent)');
+  assert.ok(doc.querySelector('.ak-logo-burst'));
 });

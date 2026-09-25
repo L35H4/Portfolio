@@ -5,8 +5,8 @@ import { fileURLToPath } from 'node:url';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const publicFiles = new Set(['index.html', '404.html', 'resume.pdf', 'robots.txt', 'sitemap.xml', 'llms.txt', 'CNAME', '.nojekyll']);
-const cleanRoutes = new Set(['about', 'projects', 'experience', 'epps', 'grad', 'earm']);
-const types = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.svg': 'image/svg+xml', '.png': 'image/png', '.webp': 'image/webp', '.pdf': 'application/pdf', '.xml': 'application/xml; charset=utf-8', '.txt': 'text/plain; charset=utf-8' };
+const cleanRoutes = new Set(['about', 'projects', 'experience', 'epps', 'grad', 'earm', 'pinpointer']);
+const types = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.webp': 'image/webp', '.pdf': 'application/pdf', '.xml': 'application/xml; charset=utf-8', '.txt': 'text/plain; charset=utf-8' };
 
 // Serve the existing production files, never the repository or private context.
 export function createPreviewServer(directory = root) {

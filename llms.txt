@@ -17,6 +17,7 @@
 - ЕППС — платформа мониторинга и планирования: https://www.korepanov.art/epps
 - ГРАД — платформа мониторинга и анализа: https://www.korepanov.art/grad
 - ЕАРМ — платформа мониторинга и подготовки отчетности: https://www.korepanov.art/earm
+- Pinpointer: https://www.korepanov.art/pinpointer
 - Опыт работы: https://www.korepanov.art/experience
 - Резюме: https://www.korepanov.art/resume.pdf
 

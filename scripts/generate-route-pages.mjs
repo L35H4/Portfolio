@@ -10,7 +10,8 @@ const routes = {
   experience: 'Опыт',
   epps: 'ЕППС',
   grad: 'ГРАД',
-  earm: 'ЕАРМ'
+  earm: 'ЕАРМ',
+  pinpointer: 'Pinpointer'
 };
 
 for (const [route, title] of Object.entries(routes)) {
